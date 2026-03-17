@@ -1,57 +1,72 @@
-# @omnixys/kafka
+# @omnixys/observability
 
-Kafka infrastructure module for Omnixys microservices.
+![version](https://img.shields.io/npm/v/@omnixys/observability)
+![license](https://img.shields.io/badge/license-GPL--3.0-blue)
 
-This package provides a fully integrated Kafka event system for NestJS applications including:
+Unified observability module for Omnixys microservices.
 
-- Kafka producer and consumer services
-- Typed Kafka events
-- Decorator-based event handlers
-- Automatic handler discovery
-- Standardized Kafka message envelope
-- Trace header propagation
-- Central topic registry
-- Configurable Kafka module
-
-The package is designed as a reusable infrastructure layer for the Omnixys platform.
+Provides:
+- Structured logging (Pino-style + Kafka)
+- Distributed tracing (OpenTelemetry)
+- Metrics (Prometheus)
+- Automatic context propagation
+- HTTP request logging (NestJS interceptor)
 
 ---
 
-# Features
+## ✨ Features
 
-- Configurable Kafka client via `KafkaModule.forRoot()`
-- Typed Kafka event registry (topic → payload)
-- Decorator-based event handlers
-- Automatic handler discovery
-- Central Kafka topic registry
-- Standardized event envelope
-- Trace propagation via Kafka headers
-- Graceful shutdown handling
-- Production-ready KafkaJS configuration
+- 🔥 **OmnixysLogger**
+  - Structured JSON logs
+  - Batch Kafka publishing
+  - Automatic trace context injection
+
+- 🔍 **Distributed Tracing**
+  - OpenTelemetry SDK
+  - OTLP export (Tempo / Collector)
+  - Auto-instrumentation (HTTP, NestJS, Kafka)
+
+- 📊 **Metrics**
+  - Prometheus exporter
+  - `/metrics` endpoint
+
+- ⚡ **NestJS Integration**
+  - Global module
+  - LoggingInterceptor
+  - TraceInterceptor
 
 ---
 
-# Installation
+## 📦 Installation
 
 ```bash
-pnpm add @omnixys/kafka
+pnpm add @omnixys/observability
 ````
 
 ---
 
-# Basic Usage
-
-## Register Kafka Module
+## ⚙️ Setup
 
 ```ts
-import { KafkaModule } from "@omnixys/kafka";
+import { ObservabilityModule } from '@omnixys/observability';
 
 @Module({
   imports: [
-    KafkaModule.forRoot({
-      clientId: "invitation-service",
-      brokers: ["localhost:9092"],
-      groupId: "invitation-consumer",
+    ObservabilityModule.forRoot({
+      serviceName: 'authentication',
+
+      otel: {
+        endpoint: 'http://localhost:4318/v1/traces',
+        samplingRatio: 1,
+      },
+
+      metrics: {
+        port: 9464,
+      },
+
+      kafka: {
+        brokers: ['localhost:9092'],
+      },
     }),
   ],
 })
@@ -60,189 +75,107 @@ export class AppModule {}
 
 ---
 
-# Publishing Events
+## 🧠 Usage
 
-Use the `KafkaProducerService` to publish events.
+### Logger
 
 ```ts
-import { KafkaProducerService, KafkaTopics } from "@omnixys/kafka";
+import { OmnixysLogger } from '@omnixys/observability';
 
 @Injectable()
-export class InvitationPublisher {
-  constructor(private readonly kafka: KafkaProducerService) {}
+export class AuthService {
+  constructor(private readonly logger: OmnixysLogger) {}
 
-  async deleteInvitation(invitationId: string) {
-    await this.kafka.send(
-      KafkaTopics.invitation.deleteInvitation,
-      {
-        invitationId
-      },
-      "invitation-service"
-    );
+  async login() {
+    const log = this.logger.child('login');
+
+    log.info('User login started');
+
+    // ...
+    
+    log.info('User login completed');
   }
 }
 ```
 
 ---
 
-# Consuming Events
+## 📡 Log Flow
 
-Kafka event handlers are defined using decorators.
-
-```ts
-import {
-  KafkaHandler,
-  KafkaEvent,
-  KafkaTopics,
-  KafkaEventContext,
-} from "@omnixys/kafka";
-
-@KafkaHandler("InvitationHandler")
-export class InvitationHandler {
-
-  @KafkaEvent(KafkaTopics.invitation.deleteInvitation)
-  async handleDeleteInvitation(
-    topic: string,
-    payload: { invitationId: string },
-    context: KafkaEventContext
-  ) {
-    console.log("Deleting invitation:", payload.invitationId);
-  }
-
-}
-```
-
-The handler will be automatically discovered and registered.
-
----
-
-# Kafka Event Envelope
-
-All Kafka messages follow a standardized envelope structure.
-
-```json
-{
-  "event": "deleteInvitation",
-  "service": "invitation-service",
-  "version": "v1",
-  "payload": {
-    "invitationId": "abc123"
-  }
-}
-```
-
-This ensures consistency across services.
-
----
-
-# Kafka Topics
-
-Kafka topics are centrally defined:
-
-```ts
-export const KafkaTopics = {
-  ticket: {
-    deleteTickets: "ticket.delete.user"
-  },
-
-  invitation: {
-    deleteInvitation: "invitation.delete.user",
-    addGuestId: "invitation.addGuestId.user"
-  },
-
-  logstream: {
-    log: "logstream.log.user"
-  }
-}
-```
-
----
-
-# Typed Kafka Events
-
-The package supports typed Kafka events through an event registry.
-
-```ts
-export interface KafkaEventRegistry {
-  [KafkaTopics.invitation.deleteInvitation]: {
-    invitationId: string
-  }
-}
-```
-
-This enables compile-time validation of event payloads.
-
-Example:
-
-```ts
-await kafka.send(
-  KafkaTopics.invitation.deleteInvitation,
-  {
-    invitationId: "abc123"
-  }
-)
-```
-
-Invalid payloads will fail during TypeScript compilation.
-
----
-
-# Kafka Headers
-
-The system automatically attaches standardized Kafka headers.
-
-Example headers:
-
-```
-x-trace-id
-x-event-name
-x-event-type
-x-event-version
-x-service
-```
-
-These headers enable:
-
-* distributed tracing
-* event metadata inspection
-* debugging and observability
-
----
-
-# Architecture
-
-The internal event flow looks like this:
-
-```
+```text
 Service
-   ↓
-KafkaProducerService
-   ↓
-Kafka
-   ↓
-KafkaConsumerService
-   ↓
-KafkaEventDispatcher
-   ↓
-@KafkaEvent handler
+  ↓
+OmnixysLogger
+  ↓
+BatchLogger (buffered)
+  ↓
+Kafka (logstream.*)
+  ↓
+logstream-service
+  ↓
+Loki / Tempo / Grafana
 ```
 
 ---
 
-# Graceful Shutdown
+## 🔍 Tracing
 
-The Kafka module automatically disconnects producer and consumer instances when the NestJS application shuts down.
+* Automatic span creation via `TraceInterceptor`
+* Context propagation via OpenTelemetry
+* Compatible with:
 
-Supported signals:
-
-* SIGINT
-* SIGTERM
-* app.close()
+  * Tempo
+  * Jaeger
+  * Zipkin
 
 ---
 
-# License
+## 📊 Metrics
 
-GPL-3.0-or-later
+* Prometheus endpoint exposed at:
 
-Copyright (C) 2025 Caleb Gyamfi - Omnixys Technologies
+```text
+http://localhost:<metrics.port>/metrics
+```
+
+---
+
+## 🧱 Architecture
+
+```text
+ObservabilityModule
+├── OmnixysLogger
+│   └── BatchLogger → Kafka
+├── OpenTelemetry SDK
+│   ├── Traces → OTLP
+│   └── Metrics → Prometheus
+├── Interceptors
+│   ├── LoggingInterceptor
+│   └── TraceInterceptor
+```
+
+---
+
+## ⚠️ Breaking Changes (v1.0.0)
+
+* Replaces legacy logging system
+* Removes env-based configuration
+* Logger must be accessed via DI (`OmnixysLogger`)
+* Kafka logging is now internal (no direct usage)
+* Introduces module-based configuration (`forRoot`)
+
+---
+
+## 🛠️ Roadmap
+
+* [ ] Retry & DLQ for BatchLogger
+* [ ] Structured error logging
+* [ ] GraphQL tracing support
+* [ ] Kafka consumer tracing
+* [ ] Log sampling / filtering
+
+---
+
+## 📄 License
+
+GPL-3.0-or-later © Omnixys Technologies

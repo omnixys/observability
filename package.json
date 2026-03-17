@@ -1,6 +1,6 @@
 {
   "name": "@omnixys/observability",
-  "version": "1.4.0",
+  "version": "0.1.0",
   "type": "module",
   "private": false,
   "packageManager": "pnpm@9.12.0",
@@ -40,6 +40,16 @@
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.4.2",
     "@nestjs/core": "^11.1.17",
+    "@omnixys/kafka": "^1.5.4",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.71.0",
+    "@opentelemetry/context-async-hooks": "^2.6.0",
+    "@opentelemetry/exporter-prometheus": "^0.213.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.213.0",
+    "@opentelemetry/resources": "^2.6.0",
+    "@opentelemetry/sdk-node": "^0.213.0",
+    "@opentelemetry/sdk-trace-base": "^2.6.0",
+    "@opentelemetry/semantic-conventions": "^1.40.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -48,15 +58,14 @@
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/node": "^25.5.0",
     "lint-staged": "^16.4.0",
+    "rxjs": "^7.8.2",
     "semantic-release": "^25.0.3"
   },
   "peerDependencies": {
     "@nestjs/common": "^11.0.0",
-    "@nestjs/core": "^11.1.17"
-  },
-  "dependencies": {
+    "@nestjs/core": "^11.1.17",
     "@omnixys/graphql": "^2.1.2",
-    "@omnixys/shared": "^2.0.0",
-    "kafkajs": "^2.2.4"
+    "@omnixys/kafka": "^1.4.0",
+    "@omnixys/shared": "^2.0.0"
   }
 }
