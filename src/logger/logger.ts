@@ -9,6 +9,7 @@ import { ObservabilityModuleOptions } from "../module/observability.options.js";
 import { BatchLogger } from "./batch-logger.js";
 import { LogLevel } from "@omnixys/shared";
 import { format } from "util";
+import { getLogger } from "./get-logger.js";
 
   function normalizeForLogging(arg: unknown): unknown {
     if (arg && typeof arg === "object") {
@@ -63,12 +64,16 @@ export class OmnixysLogger {
 // Scoped Logger
 // ============================================
 class ScopedLogger {
+  private readonly pino;
+
   constructor(
     private readonly service: string,
     private readonly operation: string,
     private readonly topic: LogstreamTopic,
     private readonly batch?: BatchLogger,
-  ) {}
+  ) {
+    this.pino = getLogger(operation, "operation");
+  }
 
   private getTrace() {
     const span = trace.getSpan(context.active());
@@ -111,7 +116,17 @@ class ScopedLogger {
       traceContext,
     };
 
-    console.log(JSON.stringify(entry));
+    // console.log(JSON.stringify(entry));
+      this.pino[level.toLowerCase() as "info" | "error" | "warn" | "debug"](
+        {
+          ...metadata,
+          traceId: traceContext?.traceId,
+          spanId: traceContext?.spanId,
+          service: this.service,
+          operation: this.operation,
+        },
+        msg,
+      );
 
     this.batch?.push(entry);
   }
@@ -140,5 +155,4 @@ class ScopedLogger {
     const normalized = args.map(normalizeForLogging);
     return format(message, ...normalized);
   }
-
 }
