@@ -8,6 +8,16 @@ import { ObservabilityModuleOptions } from "../module/observability.options.js";
 
 import { BatchLogger } from "./batch-logger.js";
 import { LogLevel } from "@omnixys/shared";
+import { format } from "util";
+
+  function normalizeForLogging(arg: unknown): unknown {
+    if (arg && typeof arg === "object") {
+      return Array.isArray(arg)
+        ? arg.map(normalizeForLogging)
+        : JSON.parse(JSON.stringify(arg));
+    }
+    return arg;
+  }
 
 @Injectable()
 export class OmnixysLogger {
@@ -52,7 +62,6 @@ export class OmnixysLogger {
 // ============================================
 // Scoped Logger
 // ============================================
-
 class ScopedLogger {
   constructor(
     private readonly service: string,
@@ -74,16 +83,26 @@ class ScopedLogger {
     };
   }
 
-  private log(
-    level: LogLevel,
-    message: string,
-    metadata?: Record<string, unknown>,
-  ) {
+  private log(level: LogLevel, message: string, ...args: unknown[]) {
+    let metadata: Record<string, unknown> | undefined;
+    let formatArgs = args;
+
+    // 👉 wenn letztes Argument ein Object ist → metadata
+    if (
+      args.length > 0 &&
+      typeof args[args.length - 1] === "object" &&
+      !Array.isArray(args[args.length - 1])
+    ) {
+      metadata = args[args.length - 1] as Record<string, unknown>;
+      formatArgs = args.slice(0, -1);
+    }
+
+    const msg = this.fmt(message, formatArgs);
     const traceContext = this.getTrace();
 
     const entry: LogDTO = {
       level,
-      message,
+      message: msg,
       metadata,
       service: this.service,
       operation: this.operation,
@@ -97,23 +116,29 @@ class ScopedLogger {
     this.batch?.push(entry);
   }
 
-  info(msg: string, meta?: Record<string, unknown>) {
-    this.log(LogLevel.INFO, msg, meta);
+  info(message: string, ...args: unknown[]) {
+    this.log(LogLevel.INFO, message, ...args);
   }
 
-  error(msg: string, meta?: Record<string, unknown>) {
-    this.log(LogLevel.ERROR, msg, meta);
+  error(message: string, ...args: unknown[]) {
+    this.log(LogLevel.ERROR, message, ...args);
   }
 
-  warn(msg: string, meta?: Record<string, unknown>) {
-    this.log(LogLevel.WARN, msg, meta);
+  warn(message: string, ...args: unknown[]) {
+    this.log(LogLevel.WARN, message, ...args);
   }
 
-  debug(msg: string, meta?: Record<string, unknown>) {
-    this.log(LogLevel.DEBUG, msg, meta);
+  debug(message: string, ...args: unknown[]) {
+    this.log(LogLevel.DEBUG, message, ...args);
   }
 
-  trace(msg: string, meta?: Record<string, unknown>) {
-    this.log(LogLevel.TRACE, msg, meta);
+  trace(message: string, ...args: unknown[]) {
+    this.log(LogLevel.TRACE, message, ...args);
   }
+
+  private fmt(message: string, args: unknown[]): string {
+    const normalized = args.map(normalizeForLogging);
+    return format(message, ...normalized);
+  }
+
 }
