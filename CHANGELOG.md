@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.0.2](https://github.com/omnixys/observability/compare/v1.0.1...v1.0.2) (2026-03-17)
+
+### Package
+
+* **Package:** update package ([](https://github.com/omnixys/observability/commit/3698ff658cd2e06ab41601e9051c4e33cbba778e))
+
 ## [1.0.1](https://github.com/omnixys/observability/compare/v1.0.0...v1.0.1) (2026-03-17)
 
 ### Logger
