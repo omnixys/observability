@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.6.6](https://github.com/omnixys/observability/compare/v1.6.5...v1.6.6) (2026-03-18)
+
+### U
+
+* **U:** u ([](https://github.com/omnixys/observability/commit/92f661911afe0fbfe74a9ea6cecfd0989afcfa38))
+
 ## [1.6.5](https://github.com/omnixys/observability/compare/v1.6.4...v1.6.5) (2026-03-18)
 
 ### Other
