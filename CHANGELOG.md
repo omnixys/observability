@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.3.1](https://github.com/omnixys/observability/compare/v1.3.0...v1.3.1) (2026-03-18)
+
+### Index
+
+* **Index:** update index.ts ([](https://github.com/omnixys/observability/commit/11200ec646611b542392b40e5a26cbea3b4ee866))
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability ([](https://github.com/omnixys/observability/commit/43e985207da4876d8989bd1c271c5c10ccf2768a))
+
 ## [1.3.0](https://github.com/omnixys/observability/compare/v1.2.0...v1.3.0) (2026-03-18)
 
 ### Other
