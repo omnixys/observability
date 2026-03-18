@@ -38,7 +38,7 @@ export class ObservabilityModule {
 
         OmnixysLogger,
 
-        // OtelProvider,
+        OtelProvider,
 
         {
           provide: APP_INTERCEPTOR,
