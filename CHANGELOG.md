@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.3.0](https://github.com/omnixys/observability/compare/v1.2.0...v1.3.0) (2026-03-18)
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability ([](https://github.com/omnixys/observability/commit/1ac2db63ccae377443e494475ad9d96d743ae9b9))
+
+### Tracing
+
+* **Tracing:** create tracing context ([](https://github.com/omnixys/observability/commit/21bc6b417b44814ac4490a40e318ee5bca3236c4))
+
 ## [1.2.0](https://github.com/omnixys/observability/compare/v1.1.0...v1.2.0) (2026-03-18)
 
 ### Logger
