@@ -61,6 +61,10 @@ export class OmnixysLogger {
     if (this.kafka) {
       this.batch = new BatchLogger(this.kafka);
     }
+
+    console.log("LOGGER SERVICE", this.service);
+    console.log("LOGGER TOPIC", this.topic);
+    console.log("LOGGER TOPIC TYPE", typeof this.topic);
   }
 
   // ------------------------------
