@@ -1,6 +1,6 @@
 {
   "name": "@omnixys/observability",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "type": "module",
   "private": false,
   "packageManager": "pnpm@9.12.0",
