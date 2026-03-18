@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.5.1](https://github.com/omnixys/observability/compare/v1.5.0...v1.5.1) (2026-03-18)
+
+### Observability
+
+* **Observability:** correct printf handling and restore structured metadata logging ([](https://github.com/omnixys/observability/commit/93efe96f93d46ef129698612996bc3238424eef1))
+
 ## [1.5.0](https://github.com/omnixys/observability/compare/v1.4.5...v1.5.0) (2026-03-18)
 
 ### Logger
