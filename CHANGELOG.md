@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.4.2](https://github.com/omnixys/observability/compare/v1.4.1...v1.4.2) (2026-03-18)
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability ([](https://github.com/omnixys/observability/commit/09ceccaf90c841280af614473729bbda84adabe0))
+
+### U
+
+* **U:** update ([](https://github.com/omnixys/observability/commit/678e9cba0c7371babf68f2c24d3a620f4b123a70))
+
 ## [1.4.1](https://github.com/omnixys/observability/compare/v1.4.0...v1.4.1) (2026-03-18)
 
 ### Logger
