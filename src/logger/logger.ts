@@ -1,7 +1,12 @@
 import { Inject, Injectable, Optional } from "@nestjs/common";
 import { context, trace } from "@opentelemetry/api";
 
-import { KafkaProducerService, KafkaTopics, LogstreamTopic, LogDTO } from "@omnixys/kafka";
+import {
+  KafkaProducerService,
+  KafkaTopics,
+  LogstreamTopic,
+  LogDTO,
+} from "@omnixys/kafka";
 
 import { OBSERVABILITY_OPTIONS } from "../module/observability.constants.js";
 import { ObservabilityModuleOptions } from "../module/observability.options.js";
@@ -84,22 +89,48 @@ export class ScopedLogger {
   }
 
   private log(level: LogLevel, message: string, ...args: unknown[]) {
-    let metadata: Record<string, unknown> | undefined;
+    let metadata: Record<string, unknown> | undefined = {};
     let formatArgs = args;
 
-    // 👉 wenn letztes Argument ein Object ist → metadata
-if (
-  args.length > 0 &&
-  typeof args[args.length - 1] === "object" &&
-  args[args.length - 1] !== null &&
-  !Array.isArray(args[args.length - 1])
-) {
-  // metadata = args[args.length - 1] as Record<string, unknown>;
-  metadata = safeSerialize(args[args.length - 1]) as Record<string, unknown>;
-  formatArgs = args.slice(0, -1);
-}
+    // ------------------------------
+    // 1. detect explicit metadata
+    // ------------------------------
+    if (
+      args.length > 0 &&
+      typeof args[args.length - 1] === "object" &&
+      args[args.length - 1] !== null &&
+      !Array.isArray(args[args.length - 1])
+    ) {
+      metadata = safeSerialize(args[args.length - 1]) as Record<
+        string,
+        unknown
+      >;
+      formatArgs = args.slice(0, -1);
+    }
 
-    const msg = this.fmt(message, formatArgs);
+    // ------------------------------
+    // 2. printf message (human readable)
+    // ------------------------------
+    const msg = format(message, ...formatArgs);
+
+    // ------------------------------
+    // 3. auto-extract structured args
+    // ------------------------------
+    const extractedArgs: Record<string, unknown> = {};
+
+    formatArgs.forEach((arg, index) => {
+      if (typeof arg === "object" && arg !== null) {
+        extractedArgs[`arg${index}`] = safeSerialize(arg);
+      } else {
+        extractedArgs[`arg${index}`] = arg;
+      }
+    });
+
+    metadata = {
+      ...extractedArgs,
+      ...metadata,
+    };
+
     const traceContext = this.getTrace();
 
     const entry: LogDTO = {
@@ -120,7 +151,7 @@ if (
         traceId: traceContext?.traceId,
         spanId: traceContext?.spanId,
         service: this.service,
-        operation: this.operation,
+        class: this.operation,
       },
       msg,
     );
@@ -147,7 +178,7 @@ if (
   trace(message: string, ...args: unknown[]) {
     this.log(LogLevel.TRACE, message, ...args);
   }
-  
+
   private fmt(message: string, args: unknown[]): string {
     return format(message, ...args); // ✅ RAW args!
   }
@@ -159,7 +190,7 @@ function safeSerialize(value: unknown): unknown {
   const seen = new WeakSet();
 
   try {
-    const json = JSON.stringify(value, (key, val) => {
+    const json = JSON.stringify(value, (_key, val) => {
       if (typeof val === "object" && val !== null) {
         if (seen.has(val)) return "[Circular]";
         seen.add(val);
@@ -170,6 +201,10 @@ function safeSerialize(value: unknown): unknown {
           message: val.message,
           stack: val.stack,
         };
+      }
+
+      if (typeof val === "bigint") {
+        return val.toString();
       }
 
       return val;
