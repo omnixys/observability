@@ -63,7 +63,7 @@ export class OmnixysLogger {
 // ============================================
 // Scoped Logger
 // ============================================
-class ScopedLogger {
+export class ScopedLogger {
   private readonly pino;
 
   constructor(
