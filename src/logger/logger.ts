@@ -95,18 +95,18 @@ export class ScopedLogger {
     // ------------------------------
     // 1. detect explicit metadata
     // ------------------------------
-    if (
-      args.length > 0 &&
-      typeof args[args.length - 1] === "object" &&
-      args[args.length - 1] !== null &&
-      !Array.isArray(args[args.length - 1])
-    ) {
-      metadata = safeSerialize(args[args.length - 1]) as Record<
-        string,
-        unknown
-      >;
-      formatArgs = args.slice(0, -1);
-    }
+const hasPlaceholders = /%[sdifoO]/.test(message);
+
+if (
+  args.length > 0 &&
+  typeof args[args.length - 1] === "object" &&
+  args[args.length - 1] !== null &&
+  !Array.isArray(args[args.length - 1]) &&
+  !hasPlaceholders // 🔥 WICHTIG
+) {
+  metadata = safeSerialize(args[args.length - 1]) as Record<string, unknown>;
+  formatArgs = args.slice(0, -1);
+}
 
     // ------------------------------
     // 2. printf message (human readable)
@@ -139,7 +139,7 @@ metadata = {
     // console.log(JSON.stringify(entry));
     this.pino[level.toLowerCase() as "info" | "error" | "warn" | "debug"](
       {
-        ...metadata,
+        // ...metadata,
         traceId: traceContext?.traceId,
         spanId: traceContext?.spanId,
         service: this.service,
