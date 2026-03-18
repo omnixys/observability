@@ -74,6 +74,17 @@ export class ScopedLogger {
   ) {
     this.pino = getLogger(operation, "operation");
   }
+  private safeMetadata(obj: unknown): Record<string, unknown> | undefined {
+  if (!obj || typeof obj !== 'object') return undefined;
+
+  try {
+    return JSON.parse(JSON.stringify(obj));
+  } catch {
+    return {
+      error: 'metadata_serialization_failed',
+    };
+  }
+}
 
   private getTrace() {
     const span = trace.getSpan(context.active());
@@ -98,7 +109,8 @@ export class ScopedLogger {
       typeof args[args.length - 1] === "object" &&
       !Array.isArray(args[args.length - 1])
     ) {
-      metadata = args[args.length - 1] as Record<string, unknown>;
+      // metadata = args[args.length - 1] as Record<string, unknown>;
+      metadata = this.safeMetadata(args[args.length - 1]) as Record<string, unknown>;
       formatArgs = args.slice(0, -1);
     }
 
