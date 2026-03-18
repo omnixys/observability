@@ -95,33 +95,36 @@ export class ScopedLogger {
     // ------------------------------
     // 1. detect explicit metadata
     // ------------------------------
-const hasPlaceholders = /%[sdifoO]/.test(message);
+    const hasPlaceholders = /%[sdifoO]/.test(message);
 
-if (
-  args.length > 0 &&
-  typeof args[args.length - 1] === "object" &&
-  args[args.length - 1] !== null &&
-  !Array.isArray(args[args.length - 1]) &&
-  !hasPlaceholders // 🔥 WICHTIG
-) {
-  metadata = safeSerialize(args[args.length - 1]) as Record<string, unknown>;
-  formatArgs = args.slice(0, -1);
-}
+    if (
+      args.length > 0 &&
+      typeof args[args.length - 1] === "object" &&
+      args[args.length - 1] !== null &&
+      !Array.isArray(args[args.length - 1]) &&
+      !hasPlaceholders // 🔥 WICHTIG
+    ) {
+      metadata = safeSerialize(args[args.length - 1]) as Record<
+        string,
+        unknown
+      >;
+      formatArgs = args.slice(0, -1);
+    }
 
     // ------------------------------
     // 2. printf message (human readable)
     // ------------------------------
     const msg = format(message, ...formatArgs);
 
-// ------------------------------
-// 3. smart structured extraction
-// ------------------------------
-const extractedArgs = mapArgsToMetadata(message, formatArgs);
+    // ------------------------------
+    // 3. smart structured extraction
+    // ------------------------------
+    const extractedArgs = mapArgsToMetadata(message, formatArgs);
 
-metadata = {
-  ...extractedArgs,
-  ...metadata,
-};
+    metadata = {
+      ...extractedArgs,
+      ...metadata,
+    };
 
     const traceContext = this.getTrace();
 
@@ -136,7 +139,6 @@ metadata = {
       traceContext,
     };
 
-    // console.log(JSON.stringify(entry));
     this.pino[level.toLowerCase() as "info" | "error" | "warn" | "debug"](
       {
         // ...metadata,
