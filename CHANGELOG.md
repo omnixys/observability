@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.1.0](https://github.com/omnixys/observability/compare/v1.0.2...v1.1.0) (2026-03-17)
+
+### Observability
+
+* **Observability:** finalize pino logger configuration with typed transports and env handling ([](https://github.com/omnixys/observability/commit/e514c8c003ada90048f24dbb77a1da2755303d15))
+
 ## [1.0.2](https://github.com/omnixys/observability/compare/v1.0.1...v1.0.2) (2026-03-17)
 
 ### Package
