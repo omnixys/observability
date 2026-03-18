@@ -11,15 +11,6 @@ import { LogLevel } from "@omnixys/shared";
 import { format } from "util";
 import { getLogger } from "./get-logger.js";
 
-  function normalizeForLogging(arg: unknown): unknown {
-    if (arg && typeof arg === "object") {
-      return Array.isArray(arg)
-        ? arg.map(normalizeForLogging)
-        : JSON.parse(JSON.stringify(arg));
-    }
-    return arg;
-  }
-
 @Injectable()
 export class OmnixysLogger {
   private readonly service: string;
@@ -104,7 +95,7 @@ if (
   !Array.isArray(args[args.length - 1])
 ) {
   // metadata = args[args.length - 1] as Record<string, unknown>;
-  metadata = safeSerialize(metadata) as Record<string, unknown>;
+  metadata = safeSerialize(args[args.length - 1]) as Record<string, unknown>;
   formatArgs = args.slice(0, -1);
 }
 
@@ -156,12 +147,7 @@ if (
   trace(message: string, ...args: unknown[]) {
     this.log(LogLevel.TRACE, message, ...args);
   }
-
-  private fmt2(message: string, args: unknown[]): string {
-    const normalized = args.map(normalizeForLogging);
-    return format(message, ...normalized);
-  }
-
+  
   private fmt(message: string, args: unknown[]): string {
     return format(message, ...args); // ✅ RAW args!
   }
