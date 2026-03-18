@@ -7,8 +7,6 @@ import {
 
 import { Observable, tap } from "rxjs";
 import { OmnixysLogger } from "../logger/logger.js";
-
-const { traceId, spanId } = getTraceContext();
   
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
