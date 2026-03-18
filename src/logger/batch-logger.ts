@@ -47,15 +47,14 @@ private async flush() {
     for (const entry of batch) {
       const ctx = entry.__context ?? context.active();
       await context.with(ctx, async () => {
-        await this.kafka.send(
-          entry.topic,
-          entry,
-          {
-            service: entry.service,
-            version: "v1",
-            operation: entry.operation,
-          },
-        );
+
+        const { __context, ...cleanEntry } = entry;
+
+await this.kafka.send(cleanEntry.topic, cleanEntry, {
+  service: cleanEntry.service,
+  version: "v1",
+  operation: cleanEntry.operation,
+});
       });
     }
 
