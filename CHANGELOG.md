@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.6.5](https://github.com/omnixys/observability/compare/v1.6.4...v1.6.5) (2026-03-18)
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability ([](https://github.com/omnixys/observability/commit/268e7f4319219358c6750fe9c7a8724eda2c38c3))
+
+### U
+
+* **U:** Update batch-logger.ts ([](https://github.com/omnixys/observability/commit/a095ac7221426e4995a87ce1e79e32818cf7a6e0))
+
 ## [1.6.4](https://github.com/omnixys/observability/compare/v1.6.3...v1.6.4) (2026-03-18)
 
 ### J
