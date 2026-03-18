@@ -12,4 +12,7 @@ export * from "./nest/request-logger.middleware.js";
 export * from "./tracing/tracing.util.js";
 
 
+export * from "./otel/otel.js";
+
+
 
