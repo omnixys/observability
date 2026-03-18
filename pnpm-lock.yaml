@@ -16,7 +16,7 @@ importers:
         version: 3.0.1(@nestjs/graphql@13.2.4(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(graphql@16.13.1)(reflect-metadata@0.2.2))(@omnixys/contracts@1.9.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(class-validator@0.15.1)
       '@omnixys/kafka':
         specifier: ^2.0.0
-        version: 3.0.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@omnixys/graphql@3.0.1(@nestjs/graphql@13.2.4(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(graphql@16.13.1)(reflect-metadata@0.2.2))(@omnixys/contracts@1.9.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(class-validator@0.15.1))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))
+        version: 3.1.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@omnixys/graphql@3.0.1(@nestjs/graphql@13.2.4(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(graphql@16.13.1)(reflect-metadata@0.2.2))(@omnixys/contracts@1.9.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(class-validator@0.15.1))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))
       '@omnixys/shared':
         specifier: ^2.0.0
         version: 2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))
@@ -393,8 +393,8 @@ packages:
       '@omnixys/shared': ^2.0.0
       class-validator: ^0.15.1
 
-  '@omnixys/kafka@3.0.0':
-    resolution: {integrity: sha512-+m2RHpvIbLdB9FVV4CMV4LqXZ72g7eetY1Uh2x7SR0dySbwIUl/5Dgncd1hW1T2vllXm3hTQ9TYJAPPv+SKA6g==, tarball: https://npm.pkg.github.com/download/@omnixys/kafka/3.0.0/1459c578e3224694ce655a007004d6667e72521c}
+  '@omnixys/kafka@3.1.1':
+    resolution: {integrity: sha512-LARkjpX/4Ordj9H4F8OxE3d4SkBBGvQpfrrnbNk2msca0tK5IZHgEQkAejVusWclk5GqZwUK3jDtpfRw04iXUw==, tarball: https://npm.pkg.github.com/download/@omnixys/kafka/3.1.1/04854ceb092b083ac5dab26b45f525138dfc652f}
     peerDependencies:
       '@nestjs/common': ^11.0.0
       '@nestjs/core': ^11.1.17
@@ -3248,7 +3248,7 @@ snapshots:
       '@omnixys/shared': 2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))
       class-validator: 0.15.1
 
-  '@omnixys/kafka@3.0.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@omnixys/graphql@3.0.1(@nestjs/graphql@13.2.4(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(graphql@16.13.1)(reflect-metadata@0.2.2))(@omnixys/contracts@1.9.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(class-validator@0.15.1))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))':
+  '@omnixys/kafka@3.1.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@omnixys/graphql@3.0.1(@nestjs/graphql@13.2.4(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(graphql@16.13.1)(reflect-metadata@0.2.2))(@omnixys/contracts@1.9.0(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))(class-validator@0.15.1))(@omnixys/shared@2.0.1(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)))':
     dependencies:
       '@nestjs/common': 11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
