@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.6.0](https://github.com/omnixys/observability/compare/v1.5.1...v1.6.0) (2026-03-18)
+
+### Observability
+
+* **Observability:** implement distributed tracing across Kafka with OpenTelemetry ([](https://github.com/omnixys/observability/commit/7a378d5312b0a48e80afac99fda29e8d72cfebbb))
+
+### Tracing
+
+* **Tracing:** Einführung von echtem Distributed Tracing (OpenTelemetry + Kafka) ([](https://github.com/omnixys/observability/commit/8cb60ccaa0abe4f5b28e8e760e4802143f05fb59))
+
 ## [1.5.1](https://github.com/omnixys/observability/compare/v1.5.0...v1.5.1) (2026-03-18)
 
 ### Observability
