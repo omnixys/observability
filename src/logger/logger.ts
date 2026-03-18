@@ -40,9 +40,9 @@ export class OmnixysLogger {
       this.batch = new BatchLogger(this.kafka);
     }
 
-    console.log("LOGGER SERVICE", this.service);
-    console.log("LOGGER TOPIC", this.topic);
-    console.log("LOGGER TOPIC TYPE", typeof this.topic);
+    // console.log("LOGGER SERVICE", this.service);
+    // console.log("LOGGER TOPIC", this.topic);
+    // console.log("LOGGER TOPIC TYPE", typeof this.topic);
   }
 
   // ------------------------------
@@ -103,8 +103,8 @@ if (
   args[args.length - 1] !== null &&
   !Array.isArray(args[args.length - 1])
 ) {
-  metadata = args[args.length - 1] as Record<string, unknown>;
-  // metadata = safeSerialize(metadata) as Record<string, unknown>;
+  // metadata = args[args.length - 1] as Record<string, unknown>;
+  metadata = safeSerialize(metadata) as Record<string, unknown>;
   formatArgs = args.slice(0, -1);
 }
 
