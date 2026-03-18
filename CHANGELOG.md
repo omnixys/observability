@@ -3,6 +3,17 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.5.0](https://github.com/omnixys/observability/compare/v1.4.5...v1.5.0) (2026-03-18)
+
+### Logger
+
+* **Logger:** add smart structured extraction ([](https://github.com/omnixys/observability/commit/9786643471f89cf56692d78382128729c9dc282e))
+* **Logger:** fix Logger ([](https://github.com/omnixys/observability/commit/ab06ba5c23888454be021ae97fdd4f2a4501f1e0))
+
+### Observability
+
+* **Observability:** introduce hybrid logger (printf + structured logging) ([](https://github.com/omnixys/observability/commit/817376ab45d4ad922f6b7f5feed9fb1fb7ba03a5))
+
 ## [1.4.5](https://github.com/omnixys/observability/compare/v1.4.4...v1.4.5) (2026-03-18)
 
 ### Logger
