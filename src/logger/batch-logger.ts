@@ -1,8 +1,13 @@
 import { KafkaProducerService, LogDTO } from "@omnixys/kafka";
 import { BatchLoggerConfig, DEFAULT_BATCH_CONFIG } from "./batch.config.js";
+import { Context, context } from "@opentelemetry/api";
+
+type InternalLogDTO = LogDTO & {
+  __context?: Context;
+};
 
 export class BatchLogger {
-  private buffer: LogDTO[] = [];
+  private buffer: InternalLogDTO[] = [];
   private timer?: NodeJS.Timeout;
 
   constructor(
@@ -12,11 +17,17 @@ export class BatchLogger {
     this.startTimer();
   }
 
+
   // ------------------------------
   // Public API
   // ------------------------------
   push(log: LogDTO) {
-    this.buffer.push(log);
+    const ctx = context.active(); // 🔥 speichern!
+
+      this.buffer.push({
+        ...log,
+        __context: ctx, // internal field
+      });
 
     if (this.buffer.length >= this.config.maxBatchSize) {
       void this.flush();
@@ -26,14 +37,16 @@ export class BatchLogger {
   // ------------------------------
   // Flush Logic
   // ------------------------------
-  private async flush() {
-    if (this.buffer.length === 0) return;
+private async flush() {
+  if (this.buffer.length === 0) return;
 
-    const batch = this.buffer;
-    this.buffer = [];
+  const batch = this.buffer;
+  this.buffer = [];
 
-    try {
-      for (const entry of batch) {
+  try {
+    for (const entry of batch) {
+      const ctx = entry.__context ?? context.active();
+      await context.with(ctx, async () => {
         await this.kafka.send(
           entry.topic,
           entry,
@@ -42,9 +55,10 @@ export class BatchLogger {
             version: "v1",
             operation: entry.operation,
           },
-          entry.traceContext,
         );
-      }
+      });
+    }
+
 
       // batch
       // await Promise.all(
