@@ -1,3 +1,7 @@
+/**
+ * BatchLogger (FIXED - context safe)
+ */
+
 import { KafkaProducerService, LogDTO } from "@omnixys/kafka";
 import { BatchLoggerConfig, DEFAULT_BATCH_CONFIG } from "./batch.config.js";
 import { Context, context } from "@opentelemetry/api";
@@ -17,73 +21,44 @@ export class BatchLogger {
     this.startTimer();
   }
 
-
-  // ------------------------------
-  // Public API
-  // ------------------------------
   push(log: LogDTO) {
-    const ctx = context.active(); // 🔥 speichern!
+    const ctx = context.active();
 
-      this.buffer.push({
-        ...log,
-        __context: ctx, // internal field
-      });
+    this.buffer.push({
+      ...log,
+      __context: ctx,
+    });
 
     if (this.buffer.length >= this.config.maxBatchSize) {
       void this.flush();
     }
   }
 
-  // ------------------------------
-  // Flush Logic
-  // ------------------------------
-private async flush() {
-  if (this.buffer.length === 0) return;
+  private async flush() {
+    if (this.buffer.length === 0) return;
 
-  const batch = this.buffer;
-  this.buffer = [];
+    const batch = this.buffer;
+    this.buffer = [];
 
-  try {
-    for (const entry of batch) {
-      const ctx = entry.__context ?? context.active();
-      await context.with(ctx, async () => {
+    try {
+      for (const entry of batch) {
+        const ctx = entry.__context ?? context.active();
 
-        const { __context, ...cleanEntry } = entry;
+        await context.with(ctx, async () => {
+          const { __context, ...clean } = entry;
 
-await this.kafka.send(cleanEntry.topic, cleanEntry, {
-  service: cleanEntry.service,
-  version: "v1",
-  operation: cleanEntry.operation,
-});
-      });
-    }
-
-
-      // batch
-      // await Promise.all(
-      //   batch.map((entry) =>
-      //     this.kafka.send(
-      //       entry.topic,
-      //       entry,
-      //       {
-      //         service: entry.service,
-      //         version: "v1",
-      //         operation: entry.operation,
-      //       },
-      //       entry.trace,
-      //     ),
-      //   ),
-      // );
+          await this.kafka.send(clean.topic, clean, {
+            service: clean.service,
+            version: "v1",
+            operation: clean.operation,
+          });
+        });
+      }
     } catch (err) {
       console.error("❌ BatchLogger flush failed", err);
-
-      // optional: retry / DLQ später
     }
   }
 
-  // ------------------------------
-  // Timer
-  // ------------------------------
   private startTimer() {
     this.timer = setInterval(() => {
       void this.flush();
