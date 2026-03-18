@@ -3,6 +3,19 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.4.0](https://github.com/omnixys/observability/compare/v1.3.3...v1.4.0) (2026-03-18)
+
+### Other
+
+* **Other:** fix(logger) add Scopped Logger ([](https://github.com/omnixys/observability/commit/60e1bd8cdbfaefce26def47e16f502237ad8f7d2))
+* **Other:** fix(logger) add Scopped Logger ([](https://github.com/omnixys/observability/commit/f47f9586c704ec9e1c0e39abaa63310f8b7c8b16))
+* **Other:** fix/realese): fix release ([](https://github.com/omnixys/observability/commit/a753d601e6c3a30aea5e1bf7750ff84e8e97af24))
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability ([](https://github.com/omnixys/observability/commit/6e52d55e8fd8ff75efe2de3780daedeba649a7d4))
+
+### Release
+
+* **Release:** new release ([](https://github.com/omnixys/observability/commit/91aab3fa73429c4eba3e40dbf957344f5d9a38a6))
+
 ## [1.3.3](https://github.com/omnixys/observability/compare/v1.3.2...v1.3.3) (2026-03-18)
 
 ### Tracing
