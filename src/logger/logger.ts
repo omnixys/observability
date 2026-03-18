@@ -11,28 +11,6 @@ import { LogLevel } from "@omnixys/shared";
 import { format } from "util";
 import { getLogger } from "./get-logger.js";
 
-function safeSerialize(value: unknown): unknown {
-  const seen = new WeakSet();
-
-  return JSON.parse(
-    JSON.stringify(value, (key, val) => {
-      if (typeof val === "object" && val !== null) {
-        if (seen.has(val)) return "[Circular]";
-        seen.add(val);
-      }
-
-      if (val instanceof Error) {
-        return {
-          message: val.message,
-          stack: val.stack,
-        };
-      }
-
-      return val;
-    }),
-  );
-}
-
   function normalizeForLogging(arg: unknown): unknown {
     if (arg && typeof arg === "object") {
       return Array.isArray(arg)
@@ -119,15 +97,16 @@ export class ScopedLogger {
     let formatArgs = args;
 
     // 👉 wenn letztes Argument ein Object ist → metadata
-    if (
-      args.length > 0 &&
-      typeof args[args.length - 1] === "object" &&
-      !Array.isArray(args[args.length - 1])
-    ) {
-      // metadata = args[args.length - 1] as Record<string, unknown>;
-      metadata = safeSerialize(metadata) as Record<string, unknown>;
-      formatArgs = args.slice(0, -1);
-    }
+if (
+  args.length > 0 &&
+  typeof args[args.length - 1] === "object" &&
+  args[args.length - 1] !== null &&
+  !Array.isArray(args[args.length - 1])
+) {
+  metadata = args[args.length - 1] as Record<string, unknown>;
+  // metadata = safeSerialize(metadata) as Record<string, unknown>;
+  formatArgs = args.slice(0, -1);
+}
 
     const msg = this.fmt(message, formatArgs);
     const traceContext = this.getTrace();
@@ -144,16 +123,16 @@ export class ScopedLogger {
     };
 
     // console.log(JSON.stringify(entry));
-      this.pino[level.toLowerCase() as "info" | "error" | "warn" | "debug"](
-        {
-          ...metadata,
-          traceId: traceContext?.traceId,
-          spanId: traceContext?.spanId,
-          service: this.service,
-          operation: this.operation,
-        },
-        msg,
-      );
+    this.pino[level.toLowerCase() as "info" | "error" | "warn" | "debug"](
+      {
+        ...metadata,
+        traceId: traceContext?.traceId,
+        spanId: traceContext?.spanId,
+        service: this.service,
+        operation: this.operation,
+      },
+      msg,
+    );
 
     this.batch?.push(entry);
   }
@@ -178,8 +157,40 @@ export class ScopedLogger {
     this.log(LogLevel.TRACE, message, ...args);
   }
 
-  private fmt(message: string, args: unknown[]): string {
+  private fmt2(message: string, args: unknown[]): string {
     const normalized = args.map(normalizeForLogging);
     return format(message, ...normalized);
+  }
+
+  private fmt(message: string, args: unknown[]): string {
+    return format(message, ...args); // ✅ RAW args!
+  }
+}
+
+function safeSerialize(value: unknown): unknown {
+  if (value === undefined) return undefined;
+
+  const seen = new WeakSet();
+
+  try {
+    const json = JSON.stringify(value, (key, val) => {
+      if (typeof val === "object" && val !== null) {
+        if (seen.has(val)) return "[Circular]";
+        seen.add(val);
+      }
+
+      if (val instanceof Error) {
+        return {
+          message: val.message,
+          stack: val.stack,
+        };
+      }
+
+      return val;
+    });
+
+    return json === undefined ? undefined : JSON.parse(json);
+  } catch {
+    return "[Unserializable]";
   }
 }
