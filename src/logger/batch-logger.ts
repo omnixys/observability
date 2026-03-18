@@ -1,6 +1,6 @@
 import { KafkaProducerService, LogDTO } from "@omnixys/kafka";
 import { BatchLoggerConfig, DEFAULT_BATCH_CONFIG } from "./batch.config.js";
-  
+
 export class BatchLogger {
   private buffer: LogDTO[] = [];
   private timer?: NodeJS.Timeout;

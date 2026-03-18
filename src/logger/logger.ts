@@ -11,6 +11,28 @@ import { LogLevel } from "@omnixys/shared";
 import { format } from "util";
 import { getLogger } from "./get-logger.js";
 
+function safeSerialize(value: unknown): unknown {
+  const seen = new WeakSet();
+
+  return JSON.parse(
+    JSON.stringify(value, (key, val) => {
+      if (typeof val === "object" && val !== null) {
+        if (seen.has(val)) return "[Circular]";
+        seen.add(val);
+      }
+
+      if (val instanceof Error) {
+        return {
+          message: val.message,
+          stack: val.stack,
+        };
+      }
+
+      return val;
+    }),
+  );
+}
+
   function normalizeForLogging(arg: unknown): unknown {
     if (arg && typeof arg === "object") {
       return Array.isArray(arg)
@@ -74,17 +96,6 @@ export class ScopedLogger {
   ) {
     this.pino = getLogger(operation, "operation");
   }
-  private safeMetadata(obj: unknown): Record<string, unknown> | undefined {
-  if (!obj || typeof obj !== 'object') return undefined;
-
-  try {
-    return JSON.parse(JSON.stringify(obj));
-  } catch {
-    return {
-      error: 'metadata_serialization_failed',
-    };
-  }
-}
 
   private getTrace() {
     const span = trace.getSpan(context.active());
@@ -110,7 +121,7 @@ export class ScopedLogger {
       !Array.isArray(args[args.length - 1])
     ) {
       // metadata = args[args.length - 1] as Record<string, unknown>;
-      metadata = this.safeMetadata(args[args.length - 1]) as Record<string, unknown>;
+      metadata = safeSerialize(metadata) as Record<string, unknown>;
       formatArgs = args.slice(0, -1);
     }
 
