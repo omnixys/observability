@@ -113,23 +113,15 @@ export class ScopedLogger {
     // ------------------------------
     const msg = format(message, ...formatArgs);
 
-    // ------------------------------
-    // 3. auto-extract structured args
-    // ------------------------------
-    const extractedArgs: Record<string, unknown> = {};
+// ------------------------------
+// 3. smart structured extraction
+// ------------------------------
+const extractedArgs = mapArgsToMetadata(message, formatArgs);
 
-    formatArgs.forEach((arg, index) => {
-      if (typeof arg === "object" && arg !== null) {
-        extractedArgs[`arg${index}`] = safeSerialize(arg);
-      } else {
-        extractedArgs[`arg${index}`] = arg;
-      }
-    });
-
-    metadata = {
-      ...extractedArgs,
-      ...metadata,
-    };
+metadata = {
+  ...extractedArgs,
+  ...metadata,
+};
 
     const traceContext = this.getTrace();
 
@@ -214,4 +206,38 @@ function safeSerialize(value: unknown): unknown {
   } catch {
     return "[Unserializable]";
   }
+}
+
+function extractKeysFromMessage(message: string): string[] {
+  const keys: string[] = [];
+
+  // matches: actor=%s, name=%d, user=%o
+  const regex = /(\w+)=\s*%[sdifoO]/g;
+
+  let match;
+  while ((match = regex.exec(message)) !== null) {
+    keys.push(match[1]);
+  }
+
+  return keys;
+}
+
+function mapArgsToMetadata(
+  message: string,
+  args: unknown[],
+): Record<string, unknown> {
+  const metadata: Record<string, unknown> = {};
+  const keys = extractKeysFromMessage(message);
+
+  args.forEach((arg, index) => {
+    const key = keys[index] ?? `arg${index}`;
+
+    if (typeof arg === "object" && arg !== null) {
+      metadata[key] = safeSerialize(arg);
+    } else {
+      metadata[key] = arg;
+    }
+  });
+
+  return metadata;
 }
