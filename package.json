@@ -15,12 +15,43 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./tracing": "./dist/tracing/index.js",
-    "./context": "./dist/context/index.js"
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./tracing": {
+      "types": "./dist/tracing/index.d.ts",
+      "import": "./dist/tracing/index.js"
+    },
+    "./context": {
+      "types": "./dist/context/index.d.ts",
+      "import": "./dist/context/index.js"
+    },
+    "./propagation": {
+      "types": "./dist/propagation/index.d.ts",
+      "import": "./dist/propagation/index.js"
+    },
+    "./http": {
+      "types": "./dist/http/index.d.ts",
+      "import": "./dist/http/index.js"
+    },
+    "./graphql": {
+      "types": "./dist/graphql/index.d.ts",
+      "import": "./dist/graphql/index.js"
+    },
+    "./logging": {
+      "types": "./dist/logging/index.d.ts",
+      "import": "./dist/logging/index.js"
+    },
+    "./metrics": {
+      "types": "./dist/metrics/index.d.ts",
+      "import": "./dist/metrics/index.js"
+    }
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "patch": "pnpm version patch",
@@ -48,6 +79,7 @@
     "@semantic-release/github": "^12.0.6",
     "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.0",
+    "@swc/core": "^1.15.21",
     "@types/node": "^25.5.0",
     "lint-staged": "^16.4.0",
     "semantic-release": "^25.0.3",

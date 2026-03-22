@@ -1,10 +1,11 @@
-export * from "./context/cls.service.js";
-export * from "./context/correlation-id.service.js";
-export * from "./core/observability.module.js";
-export * from "./core/observability.options.js";
-export * from "./http/correlation.middleware.js";
-export * from "./http/http-tracing.middleware.js";
-export * from "./propagation/kafka-propagator.js";
-export * from "./propagation/w3c-propagator.js";
-export * from "./tracing/span.decorator.js";
+export * from "./core";
+
+// curated exports (DX friendly)
 export * from "./tracing/trace.service.js";
+export * from "./tracing/span.decorator.js";
+
+export * from "./context/correlation-id.service.js";
+export * from "./context/request-context.service.js";
+
+export * from "./propagation/w3c-propagator.js";
+export * from "./propagation/kafka-propagator.js";
