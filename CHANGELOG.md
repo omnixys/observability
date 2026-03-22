@@ -3,6 +3,40 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.0](https://github.com/omnixys/observability/compare/v1.6.6...v2.0.0) (2026-03-22)
+
+### ⚠ BREAKING CHANGE
+
+* **Observability:** removed express middleware support (fastify-only)
+replaced middleware with fastify hooks
+refactored tracing lifecycle (otel provider + hooks)
+introduced CLS-based request context
+changed span naming strategy
+updated propagation system (kafka + w3c)
+added adaptive sampler (sampling behavior changed)
+metrics initialization refactored (no duplicate exporters)
+removed legacy trace utils
+
+NEW FEATURES:
+
+adaptive sampling
+graphql tracing
+kafka propagation
+correlation id system
+jwt context extraction
+span enrichment (userId, tenantId)
+otel log events
+slo + rate limit metrics
+
+### Ci
+
+* **Ci:** stabilize release and publish workflow with proper semantic-release detection ([](https://github.com/omnixys/observability/commit/6891b5e30d768dede776f1b8aa7d4f12567a1596))
+
+### Observability
+
+* **Observability:** introduce v5 platform intelligence layer with fastify-first architecture ([](https://github.com/omnixys/observability/commit/3830e49c81a78c80a39b3106d9d18d52c64e3ba4))
+* **Observability:** fix TypeScript v6 rootDir requirement and build output structure ([](https://github.com/omnixys/observability/commit/777301e0c8eb7a40f8e77e288d7bf1d98c56728a))
+
 ## [1.6.6](https://github.com/omnixys/observability/compare/v1.6.5...v1.6.6) (2026-03-18)
 
 ### U
