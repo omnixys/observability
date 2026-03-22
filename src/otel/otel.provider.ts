@@ -1,25 +1,26 @@
-import {
-  Inject,
-  Injectable,
-  OnModuleInit,
-  OnModuleDestroy,
-} from "@nestjs/common";
-import { startOtelSDK, shutdownOtelSDK } from "../otel/otel.js";
-import { OBSERVABILITY_OPTIONS } from "../module/observability.constants.js";
-import { ObservabilityModuleOptions } from "../module/observability.options.js";
+import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from "@nestjs/common";
+import type { NodeSDK } from "@opentelemetry/sdk-node";
+import { OBSERVABILITY_OPTIONS } from "../core/observability.constants.js";
+import type { ObservabilityModuleOptions } from "../core/observability.options.js";
+import { createOtelSDK } from "./otel.factory.js";
 
 @Injectable()
 export class OtelProvider implements OnModuleInit, OnModuleDestroy {
+  private sdk!: NodeSDK;
+
   constructor(
     @Inject(OBSERVABILITY_OPTIONS)
     private readonly options: ObservabilityModuleOptions,
   ) {}
 
   async onModuleInit() {
-    await startOtelSDK(this.options);
+    this.sdk = await createOtelSDK(this.options);
+    await this.sdk.start();
   }
 
   async onModuleDestroy() {
-    await shutdownOtelSDK();
+    if (this.sdk) {
+      await this.sdk.shutdown();
+    }
   }
 }

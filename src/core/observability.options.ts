@@ -3,15 +3,14 @@ export interface ObservabilityModuleOptions {
 
   otel: {
     endpoint: string;
+    transport?: "http" | "grpc";
     samplingRatio?: number;
   };
 
   metrics?: {
+    enabled?: boolean;
     port?: number;
   };
 
-  kafka?: {
-    brokers: string[];
-    clientId?: string;
-  };
+  resourceAttributes?: Record<string, string>;
 }
