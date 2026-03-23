@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.1.0](https://github.com/omnixys/observability/compare/v2.0.2...v2.1.0) (2026-03-23)
+
+### Propagation
+
+* **Propagation:** add Header Carrier ([](https://github.com/omnixys/observability/commit/e8ba502931d6980d5e0af41a78127e045ecc6c23))
+
 ## [2.0.2](https://github.com/omnixys/observability/compare/v2.0.1...v2.0.2) (2026-03-23)
 
 ### Index
