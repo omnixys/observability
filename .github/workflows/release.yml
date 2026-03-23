@@ -95,7 +95,15 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure latest main
+        run: |
+          git fetch origin main
+          git checkout origin/main
 
       - uses: pnpm/action-setup@v3
         with:
