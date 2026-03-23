@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.2](https://github.com/omnixys/observability/compare/v2.0.1...v2.0.2) (2026-03-23)
+
+### Index
+
+* **Index:** update index.ts ([](https://github.com/omnixys/observability/commit/e8cdd6f1da970b6c06063ee3381e60d21ceaead6))
+
 ## [2.0.1](https://github.com/omnixys/observability/compare/v2.0.0...v2.0.1) (2026-03-23)
 
 ### Index
