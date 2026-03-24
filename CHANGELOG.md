@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.1.2](https://github.com/omnixys/observability/compare/v2.1.1...v2.1.2) (2026-03-24)
+
+### Observability
+
+* **Observability:** resolve NestJS DI failure caused by type-only import ([](https://github.com/omnixys/observability/commit/4c45ee29a27d520b3ea3bb692b9d79c265bc05e2))
+
 ## [2.1.1](https://github.com/omnixys/observability/compare/v2.1.0...v2.1.1) (2026-03-24)
 
 ### Observability
