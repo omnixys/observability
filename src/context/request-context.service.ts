@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { ClsService } from "./cls.service.js";
+import { ClsService } from "./cls.service.js";
 
 @Injectable()
 export class RequestContextService {
