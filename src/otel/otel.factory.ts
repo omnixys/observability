@@ -16,7 +16,6 @@ import {
   resourceFromAttributes,
 } from "@opentelemetry/resources";
 import { NodeSDK } from "@opentelemetry/sdk-node";
-import { ParentBasedSampler, TraceIdRatioBasedSampler } from "@opentelemetry/sdk-trace-base";
 import type { ObservabilityModuleOptions } from "../core/observability.options.js";
 import { AdaptiveSampler } from "../tracing/adaptive-sampler.js";
 

@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify";
+import type { FastifyRequest } from "fastify";
 
 export class JwtContextExtractor {
   static extract(req: FastifyRequest) {
@@ -9,9 +9,7 @@ export class JwtContextExtractor {
     const token = auth.replace("Bearer ", "");
 
     try {
-      const payload = JSON.parse(
-        Buffer.from(token.split(".")[1], "base64").toString(),
-      );
+      const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
 
       return {
         userId: payload.sub,

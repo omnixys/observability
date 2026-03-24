@@ -1,4 +1,4 @@
-import { Span } from "@opentelemetry/api";
+import type { Span } from "@opentelemetry/api";
 import { TraceContextExtractor } from "../context/trace-context.extractor.js";
 
 export class SpanEnricher {
