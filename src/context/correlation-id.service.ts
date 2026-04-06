@@ -1,7 +1,7 @@
-import { randomUUID } from "node:crypto";
-import { Injectable } from "@nestjs/common";
-import { ClsService } from "./cls.service.js";
-import { CORRELATION_ID_KEY } from "../core/observability.constants.js";
+import { CORRELATION_ID_KEY } from '../core/observability.constants.js';
+import { ClsService } from './cls.service.js';
+import { Injectable } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class CorrelationIdService {

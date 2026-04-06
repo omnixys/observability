@@ -1,4 +1,4 @@
-import { context, trace } from "@opentelemetry/api";
+import { context, trace } from '@opentelemetry/api';
 
 export class OtelLogExporter {
   static emit(message: string, data?: Record<string, any>) {
@@ -6,7 +6,7 @@ export class OtelLogExporter {
 
     if (!span) return;
 
-    span.addEvent("log", {
+    span.addEvent('log', {
       message,
       ...data,
     });

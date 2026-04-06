@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+
 export class RateLimitMetrics {
   private hits = new Map<string, number>();
 

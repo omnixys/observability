@@ -3,7 +3,7 @@ export interface ObservabilityModuleOptions {
 
   otel: {
     endpoint: string;
-    transport?: "http" | "grpc";
+    transport?: 'http' | 'grpc';
     samplingRatio?: number;
   };
 

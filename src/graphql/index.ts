@@ -1,1 +1,1 @@
-export * from "./graphql.interceptor.js";
+export * from './graphql.interceptor.js';

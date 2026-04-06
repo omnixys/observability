@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { context, trace } from "@opentelemetry/api";
+import { Injectable } from '@nestjs/common';
+import { context, trace } from '@opentelemetry/api';
 
 @Injectable()
 export class TraceService {

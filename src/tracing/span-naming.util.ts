@@ -7,7 +7,7 @@ export class SpanNaming {
     return `GraphQL ${type}.${field}`;
   }
 
-  static kafka(topic: string, operation: "publish" | "consume") {
+  static kafka(topic: string, operation: 'publish' | 'consume') {
     return `Kafka ${operation.toUpperCase()} ${topic}`;
   }
 

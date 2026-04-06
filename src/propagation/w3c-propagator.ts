@@ -1,5 +1,5 @@
-import { context, propagation } from "@opentelemetry/api";
-import type { HeaderCarrier } from "./header-carrier.interface.js";
+import type { HeaderCarrier } from './header-carrier.interface.js';
+import { context, propagation } from '@opentelemetry/api';
 
 export class W3CPropagator {
   inject(carrier: HeaderCarrier): void {
@@ -11,7 +11,7 @@ export class W3CPropagator {
   extract(carrier: HeaderCarrier) {
     return propagation.extract(context.active(), carrier, {
       get: (c, key) => c.get(key),
-      keys: () => [],
+      keys: (c) => c.keys(), // 🔥 FIX
     });
   }
 }

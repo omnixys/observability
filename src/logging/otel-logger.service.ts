@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { trace } from "@opentelemetry/api";
-import { ErrorClassifier } from "./error-classifier.js";
-import type { LogLevel } from "./log-level.enum.js";
+import { ErrorClassifier } from './error-classifier.js';
+import type { LogLevel } from './log-level.enum.js';
+import { Injectable } from '@nestjs/common';
+import { trace } from '@opentelemetry/api';
 
 @Injectable()
 export class OtelLogger {
@@ -10,9 +10,9 @@ export class OtelLogger {
 
     if (!span) return;
 
-    span.addEvent("log", {
-      "log.level": level,
-      "log.message": message,
+    span.addEvent('log', {
+      'log.level': level,
+      'log.message': message,
       ...meta,
     });
   }
@@ -24,7 +24,7 @@ export class OtelLogger {
 
     span.recordException(err as Error);
 
-    span.addEvent("error", {
+    span.addEvent('error', {
       message,
       classification: ErrorClassifier.classify(err),
     });

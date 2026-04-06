@@ -56,11 +56,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "patch": "pnpm version patch",
     "release": "semantic-release",
-    "lint": "biome lint",
-    "format": "biome format --write",
-    "lint:fix": "biome lint . --write",
-    "check": "biome check .",
-    "check:fix": "biome check --write",
+    "format": "prettier --cache --write \"src/**/*.{ts,js,json,prisma,md,yaml}\"",
     "dev": "tsc -w"
   },
   "keywords": [
@@ -70,9 +66,9 @@
   ],
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@biomejs/biome": "^2.4.8",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@prisma/client": "^7.5.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -83,6 +79,9 @@
     "@types/node": "^25.5.0",
     "lint-staged": "^16.4.0",
     "semantic-release": "^25.0.3",
+        "prettier": "^3.8.1",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-sort-imports": "^1.8.11",
     "tsup": "^8.5.1"
   },
   "peerDependencies": {

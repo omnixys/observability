@@ -1,15 +1,16 @@
-import { type DynamicModule, Global, Module } from "@nestjs/common";
-import { APP_INTERCEPTOR } from "@nestjs/core";
-import { ClsService } from "../context/cls.service.js";
-import { CorrelationIdService } from "../context/correlation-id.service.js";
-import { RequestContextService } from "../context/request-context.service.js";
-import { GraphQLInterceptor } from "../graphql/graphql.interceptor.js";
-import { OtelLogger } from "../logging/otel-logger.service.js";
-import { OtelProvider } from "../otel/otel.provider.js";
-import { TraceInterceptor } from "../tracing/trace.interceptor.js";
-import { TraceService } from "../tracing/trace.service.js";
-import { OBSERVABILITY_OPTIONS } from "./observability.constants.js";
-import type { ObservabilityModuleOptions } from "./observability.options.js";
+import { CacheObservabilityService } from '../cache/cache-observability.service.js';
+import { ClsService } from '../context/cls.service.js';
+import { CorrelationIdService } from '../context/correlation-id.service.js';
+import { RequestContextService } from '../context/request-context.service.js';
+import { GraphQLInterceptor } from '../graphql/graphql.interceptor.js';
+import { OtelLogger } from '../logging/otel-logger.service.js';
+import { OtelProvider } from '../otel/otel.provider.js';
+import { TraceInterceptor } from '../tracing/trace.interceptor.js';
+import { TraceService } from '../tracing/trace.service.js';
+import { OBSERVABILITY_OPTIONS } from './observability.constants.js';
+import type { ObservabilityModuleOptions } from './observability.options.js';
+import { type DynamicModule, Global, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Global()
 @Module({})
@@ -28,6 +29,8 @@ export class ObservabilityModule {
         CorrelationIdService,
         RequestContextService,
         OtelLogger,
+        CacheObservabilityService,
+
         {
           provide: APP_INTERCEPTOR,
           useClass: TraceInterceptor,
@@ -37,7 +40,14 @@ export class ObservabilityModule {
           useClass: GraphQLInterceptor,
         },
       ],
-      exports: [TraceService, ClsService, CorrelationIdService, RequestContextService, OtelLogger],
+      exports: [
+        TraceService,
+        ClsService,
+        CorrelationIdService,
+        RequestContextService,
+        OtelLogger,
+        CacheObservabilityService,
+      ],
     };
   }
 }

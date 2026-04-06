@@ -1,4 +1,4 @@
-import { context, trace } from "@opentelemetry/api";
+import { context, trace } from '@opentelemetry/api';
 
 export class TraceContextExtractor {
   static current() {

@@ -1,11 +1,15 @@
-import type { Sampler, SamplingResult } from "@opentelemetry/sdk-trace-base";
+import type { Sampler, SamplingResult } from '@opentelemetry/sdk-trace-base';
 
 export class AdaptiveSampler implements Sampler {
   constructor(private readonly baseRate = 0.1) {}
 
-  shouldSample(_context: any, traceId: string, _spanName: string): SamplingResult {
+  shouldSample(
+    _context: any,
+    traceId: string,
+    _spanName: string,
+  ): SamplingResult {
     // Always sample errors (traceId heuristic)
-    if (traceId.endsWith("ff")) {
+    if (traceId.endsWith('ff')) {
       return { decision: 2 }; // RECORD_AND_SAMPLE
     }
 
@@ -20,6 +24,6 @@ export class AdaptiveSampler implements Sampler {
   }
 
   toString() {
-    return "AdaptiveSampler";
+    return 'AdaptiveSampler';
   }
 }

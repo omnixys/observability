@@ -1,5 +1,6 @@
-import { AsyncLocalStorage } from "node:async_hooks";
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
+import { context } from '@opentelemetry/api';
+import { AsyncLocalStorage } from 'node:async_hooks';
 
 type Store = Map<string, unknown>;
 
@@ -8,7 +9,12 @@ export class ClsService {
   private readonly storage = new AsyncLocalStorage<Store>();
 
   run(fn: () => void) {
-    this.storage.run(new Map(), fn);
+    const activeContext = context.active();
+
+    this.storage.run(new Map(), () => {
+      // 🔥 OTEL Context wieder aktivieren
+      context.with(activeContext, fn);
+    });
   }
 
   set<T>(key: string, value: T) {
