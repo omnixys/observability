@@ -576,7 +576,7 @@ packages:
     resolution: {integrity: sha512-sKq+9r1Mm4efXW1FCk7hFSeJo4QKreL/tTbR0rz/qx/r1Oa2VV83LTA/H/MuCOX7uCIJmQVRKBcbmWoySjAnSg==}
 
   '@omnixys/shared@1.0.0':
-    resolution: {integrity: sha512-GTkHquJIQ2SXv/DAn1p9eae7VjGTUhdZR2783BYhVHZJyfaJ8TUBJFQK0+RnQitzRVdFtDYlePTslS1VREIXqQ==, tarball: https://npm.pkg.github.com/download/@omnixys/shared/1.0.0/7da19c76ce486dc27e99c1ad4db8b2dbc87bcfde}
+    resolution: {integrity: sha512-dYb/OWDeaNmAfMmkw5edPnR7hYHY2gc7dAov8UtBPMhLjH0x+Dzwta/C+nFi5RSaNkEgHqYE93UFbhWTNiQpwA==, tarball: https://npm.pkg.github.com/download/@omnixys/shared/1.0.0/b513aa9153fec198cb487dc0e4557b3c0095edc9}
     peerDependencies:
       '@nestjs/common': ^11.0.0
 
