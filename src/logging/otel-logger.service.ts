@@ -1,6 +1,6 @@
 import { ErrorClassifier } from './error-classifier.js';
-import type { LogLevel } from './log-level.enum.js';
 import { Injectable } from '@nestjs/common';
+import { LogLevel } from '@omnixys/shared';
 import { trace } from '@opentelemetry/api';
 
 @Injectable()

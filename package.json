@@ -1,6 +1,6 @@
 {
   "name": "@omnixys/observability",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "module",
   "private": false,
   "packageManager": "pnpm@10.33.0",
@@ -71,6 +71,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@omnixys/shared": "^1.0.0",
     "@prisma/client": "^7.5.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -81,16 +82,17 @@
     "@swc/core": "^1.15.21",
     "@types/node": "^25.5.0",
     "lint-staged": "^16.4.0",
-    "semantic-release": "^25.0.3",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-sort-imports": "^1.8.11",
+    "semantic-release": "^25.0.3",
     "tsup": "^8.5.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
+    "@omnixys/shared": "^1.0.0",
     "fastify": "^5.8.2"
   },
   "dependencies": {
