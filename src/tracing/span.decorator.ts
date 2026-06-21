@@ -1,3 +1,5 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
+import { SpanEnricher } from './span-enricher.js';
 import { trace } from '@opentelemetry/api';
 
 export function Span(name?: string): MethodDecorator {
@@ -8,8 +10,11 @@ export function Span(name?: string): MethodDecorator {
       const tracer = trace.getTracer('custom');
 
       return tracer.startActiveSpan(name ?? String(propertyKey), (span) => {
+        SpanEnricher.enrich(span);
         try {
-          const result = original.apply(this, args);
+          const result = runWithCanonicalTrace(span, () =>
+            original.apply(this, args),
+          );
 
           if (result instanceof Promise) {
             return result.finally(() => span.end());

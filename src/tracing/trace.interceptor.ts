@@ -1,3 +1,4 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
 import { SpanEnricher } from './span-enricher.js';
 import { SpanNaming } from './span-naming.util.js';
 import {
@@ -6,42 +7,57 @@ import {
   Injectable,
   type NestInterceptor,
 } from '@nestjs/common';
-import { trace } from '@opentelemetry/api';
-import { type Observable, tap } from 'rxjs';
+import { SpanStatusCode, trace } from '@opentelemetry/api';
+import { finalize, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class TraceInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    if (context.getType() !== 'http') {
-      return next.handle();
-    }
+    if (context.getType() !== 'http') return next.handle();
 
     const tracer = trace.getTracer('http');
-
     const http = context.switchToHttp();
-    const req = http.getRequest();
-    const res = http.getResponse();
+    const request = http.getRequest();
+    const response = http.getResponse();
+    const route = request.route?.path ?? request.url;
 
-    const route = req.route?.path ?? req.url;
+    // Create and subscribe to the handler observable inside both the OTel and
+    // canonical context scopes. This preserves both across async emissions.
+    return new Observable((subscriber) =>
+      tracer.startActiveSpan(SpanNaming.http(request.method, route), (span) => {
+        SpanEnricher.enrich(span);
 
-    return tracer.startActiveSpan(
-      SpanNaming.http(req.method, route),
-      (span) => {
-        return next.handle().pipe(
-          tap({
-            next: () => {
-              span.setAttribute('http.status_code', res.statusCode);
-              SpanEnricher.enrich(span);
-              span.end();
-            },
-            error: (err) => {
-              span.recordException(err);
-              SpanEnricher.enrich(span);
-              span.end();
-            },
-          }),
-        );
-      },
+        return runWithCanonicalTrace(span, () => {
+          try {
+            return next
+              .handle()
+              .pipe(
+                tap({
+                  error: (error) => {
+                    span.recordException(error);
+                    span.setStatus({
+                      code: SpanStatusCode.ERROR,
+                      message:
+                        error instanceof Error ? error.message : String(error),
+                    });
+                  },
+                }),
+                finalize(() => {
+                  span.setAttribute('http.status_code', response.statusCode);
+                  SpanEnricher.enrich(span);
+                  span.end();
+                }),
+              )
+              .subscribe(subscriber);
+          } catch (error) {
+            span.recordException(error as Error);
+            span.setStatus({ code: SpanStatusCode.ERROR });
+            SpanEnricher.enrich(span);
+            span.end();
+            subscriber.error(error);
+          }
+        });
+      }),
     );
   }
 }

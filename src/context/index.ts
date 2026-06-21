@@ -7,3 +7,4 @@ export * from './trace-runner.js';
 export * from './trace-context-runner.js';
 export * from './prisma.instrumentation.js';
 export * from './context-store.js';
+export * from './canonical-trace-context.js';

@@ -1,3 +1,4 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
 import { SpanEnricher } from '../tracing/span-enricher.js';
 import { CacheMetricsService } from './cache-metrics.service.js';
 import { Injectable } from '@nestjs/common';
@@ -20,7 +21,7 @@ export class CacheObservabilityService {
       SpanEnricher.enrich(span);
 
       try {
-        const result = await fn(span);
+        const result = await runWithCanonicalTrace(span, () => fn(span));
 
         if (operation === 'set') {
           this.metrics.write();

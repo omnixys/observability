@@ -1,3 +1,5 @@
+import { SpanEnricher } from '../tracing/span-enricher.js';
+import { runWithCanonicalTrace } from './canonical-trace-context.js';
 import { context, trace, SpanStatusCode, SpanKind } from '@opentelemetry/api';
 
 export class TraceRunner {
@@ -8,8 +10,9 @@ export class TraceRunner {
       name,
       { kind: SpanKind.INTERNAL },
       async (span) => {
+        SpanEnricher.enrich(span);
         try {
-          return await fn();
+          return await runWithCanonicalTrace(span, fn);
         } catch (err) {
           span.recordException(err as Error);
           span.setStatus({

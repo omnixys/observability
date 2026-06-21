@@ -1,3 +1,5 @@
+import { SpanEnricher } from '../tracing/span-enricher.js';
+import { runWithCanonicalTrace } from './canonical-trace-context.js';
 import {
   trace,
   SpanKind,
@@ -75,6 +77,7 @@ export function createPrismaMiddleware(options: Options): PrismaMiddleware {
         },
       },
       async (span) => {
+        SpanEnricher.enrich(span);
         const start = process.hrtime.bigint();
 
         try {
@@ -86,7 +89,7 @@ export function createPrismaMiddleware(options: Options): PrismaMiddleware {
             span.setAttribute('db.params', JSON.stringify(safeArgs));
           }
 
-          const result = await next(params);
+          const result = await runWithCanonicalTrace(span, () => next(params));
 
           const duration = Number(process.hrtime.bigint() - start) / 1_000_000;
 

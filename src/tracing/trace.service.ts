@@ -1,3 +1,4 @@
+import { TraceContextExtractor } from '../context/trace-context.extractor.js';
 import { Injectable } from '@nestjs/common';
 import { context, trace } from '@opentelemetry/api';
 
@@ -8,10 +9,10 @@ export class TraceService {
   }
 
   traceId() {
-    return this.getSpan()?.spanContext().traceId;
+    return TraceContextExtractor.getTraceId() ?? undefined;
   }
 
   spanId() {
-    return this.getSpan()?.spanContext().spanId;
+    return TraceContextExtractor.getSpanId() ?? undefined;
   }
 }

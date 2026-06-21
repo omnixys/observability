@@ -1,3 +1,4 @@
+import { SpanEnricher } from './span-enricher.js';
 import { context, trace, SpanKind } from '@opentelemetry/api';
 
 export function setupPrismaSpans(prisma: any) {
@@ -22,6 +23,8 @@ export function setupPrismaSpans(prisma: any) {
       },
       ctx, // ✅ korrekt
     );
+
+    SpanEnricher.enrich(span);
 
     span.end();
   });

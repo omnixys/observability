@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 
 @Injectable()
+/** @deprecated Prefer `ContextAccessor.get()?.correlationId`. */
 export class CorrelationIdService {
   constructor(private readonly cls: ClsService) {}
 

@@ -1,9 +1,15 @@
+import { ContextAccessor } from '@omnixys/context';
 import { context, trace } from '@opentelemetry/api';
 
 export class TraceContextExtractor {
-  static current() {
+  static current(): { traceId: string; spanId: string } | null {
     const span = trace.getSpan(context.active());
-    if (!span) return null;
+    if (!span) {
+      const metadata = ContextAccessor.get()?.trace;
+      return metadata?.traceId && metadata.spanId
+        ? { traceId: metadata.traceId, spanId: metadata.spanId }
+        : null;
+    }
 
     const ctx = span.spanContext();
 

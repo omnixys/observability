@@ -1,3 +1,5 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
+import { SpanEnricher } from '../tracing/span-enricher.js';
 import { SpanKind, SpanStatusCode, trace, type Span } from '@opentelemetry/api';
 
 export class CacheTrace {
@@ -12,7 +14,8 @@ export class CacheTrace {
       { kind: SpanKind.PRODUCER },
       async (span) => {
         try {
-          const result = await fn(span);
+          SpanEnricher.enrich(span);
+          const result = await runWithCanonicalTrace(span, () => fn(span));
           span.setStatus({ code: SpanStatusCode.OK });
           return result;
         } catch (error) {
@@ -40,7 +43,8 @@ export class CacheTrace {
       { kind: SpanKind.CONSUMER },
       async (span) => {
         try {
-          const result = await fn(span);
+          SpanEnricher.enrich(span);
+          const result = await runWithCanonicalTrace(span, () => fn(span));
           span.setStatus({ code: SpanStatusCode.OK });
           return result;
         } catch (error) {

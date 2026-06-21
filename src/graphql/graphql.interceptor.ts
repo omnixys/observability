@@ -1,3 +1,4 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
 import { SpanNaming } from '../tracing/span-naming.util.js';
 import {
   CallHandler,
@@ -27,10 +28,17 @@ export class GraphQLInterceptor implements NestInterceptor {
     span.setAttribute('graphql.field', info.fieldName);
     span.setAttribute('graphql.type', info.parentType.name);
 
-    return next.handle().pipe(
-      tap({
-        error: (err) => span.recordException(err),
-      }),
+    return new Observable((subscriber) =>
+      runWithCanonicalTrace(span, () =>
+        next
+          .handle()
+          .pipe(
+            tap({
+              error: (err) => span.recordException(err),
+            }),
+          )
+          .subscribe(subscriber),
+      ),
     );
   }
 }

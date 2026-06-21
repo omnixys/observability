@@ -1,4 +1,6 @@
+import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
 import { HeaderCarrier } from '../propagation/header-carrier.interface.js';
+import { SpanEnricher } from '../tracing/span-enricher.js';
 import {
   context,
   propagation,
@@ -41,10 +43,11 @@ export class KafkaTrace {
         { kind: SpanKind.PRODUCER },
         async (span) => {
           try {
+            SpanEnricher.enrich(span);
             span.setAttribute('messaging.system', 'kafka');
             span.setAttribute('messaging.destination', topic);
 
-            return await fn();
+            return await runWithCanonicalTrace(span, fn);
           } catch (err: any) {
             span.recordException(err);
             span.setStatus({
@@ -71,10 +74,11 @@ export class KafkaTrace {
       { kind: SpanKind.CONSUMER },
       async (span) => {
         try {
+          SpanEnricher.enrich(span);
           span.setAttribute('messaging.system', 'kafka');
           span.setAttribute('messaging.destination', topic);
 
-          const result = await fn();
+          const result = await runWithCanonicalTrace(span, fn);
 
           span.setStatus({ code: SpanStatusCode.OK });
           return result;

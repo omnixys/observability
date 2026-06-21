@@ -1,3 +1,4 @@
+import { CacheMetricsService } from '../cache/cache-metrics.service.js';
 import { CacheObservabilityService } from '../cache/cache-observability.service.js';
 import { ClsService } from '../context/cls.service.js';
 import { CorrelationIdService } from '../context/correlation-id.service.js';
@@ -30,6 +31,7 @@ export class ObservabilityModule {
         RequestContextService,
         OtelLogger,
         CacheObservabilityService,
+        CacheMetricsService,
 
         {
           provide: APP_INTERCEPTOR,
@@ -47,6 +49,7 @@ export class ObservabilityModule {
         RequestContextService,
         OtelLogger,
         CacheObservabilityService,
+        CacheMetricsService,
       ],
     };
   }
