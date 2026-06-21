@@ -72,8 +72,8 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@omnixys/contracts": "file:../contracts",
     "@omnixys/context": "file:../context",
-    "@omnixys/shared": "^1.0.0",
     "@prisma/client": "^7.5.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
@@ -94,8 +94,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
+    "@omnixys/contracts": "^1.0.0",
     "@omnixys/context": "^1.0.0",
-    "@omnixys/shared": "^1.0.0",
     "fastify": "^5.8.2"
   },
   "dependencies": {
