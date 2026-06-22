@@ -1,13 +1,9 @@
 import type { ObservabilityModuleOptions } from '../core/observability.options.js';
 import { AdaptiveSampler } from '../tracing/adaptive-sampler.js';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { OTLPTraceExporter as GrpcExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
-import {
-  OTLPTraceExporter as HttpExporter,
-  OTLPTraceExporter,
-} from '@opentelemetry/exporter-trace-otlp-http';
+import { OTLPTraceExporter as HttpExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import {
   defaultResource,
   detectResources,
@@ -37,14 +33,6 @@ export async function createOtelSDK(
       }),
     );
 
-  const traceExporter = new OTLPTraceExporter({
-    url: options.otel.endpoint,
-  });
-
-  const prometheusExporter = new PrometheusExporter({
-    port: options.metrics?.port ?? 9464,
-  });
-
   const exporter =
     options.otel.transport === 'grpc'
       ? new GrpcExporter({ url: options.otel.endpoint })
@@ -63,11 +51,5 @@ export async function createOtelSDK(
     sampler: new AdaptiveSampler(options.otel.samplingRatio ?? 0.1),
     traceExporter: exporter,
     metricReaders,
-    // instrumentations: [
-    //   getNodeAutoInstrumentations({
-    //     "@opentelemetry/instrumentation-pg": { enabled: true },
-    //     "@opentelemetry/instrumentation-mysql2": { enabled: true },
-    //   }),
-    // ],
   });
 }
