@@ -55,6 +55,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "pnpm run build && node --test test/*.test.mjs",
+    "prepack": "pnpm run build",
     "patch": "pnpm version patch",
     "release": "semantic-release",
     "format": "prettier --cache --write \"src/**/*.{ts,js,json,prisma,md,yaml}\"",
