@@ -50,6 +50,56 @@ test('span enrichment uses canonical request metadata', () => {
   assert.equal(attributes.get('transport.route'), '/orders/:id');
 });
 
+test('span enrichment does not crash when ContextAccessor has no client metadata', () => {
+  const attributes = new Map();
+  const span = fakeSpan(attributes);
+
+  ContextAccessor.run(
+    {
+      requestId: 'no-client',
+      correlationId: 'no-client',
+      startedAtEpochMs: Date.now(),
+      principal: { subject: 'subject-1', actorId: 'actor-1', userId: 'user-1', roles: [] },
+      transport: { type: 'internal' },
+    },
+    () =>
+      SpanEnricher.enrich(span, {}),
+  );
+
+  assert.equal(attributes.get('client.address'), undefined);
+});
+
+test('span enrichment does not crash when ContextAccessor has no transport metadata', () => {
+  const attributes = new Map();
+  const span = fakeSpan(attributes);
+
+  ContextAccessor.run(
+    {
+      requestId: 'no-transport',
+      correlationId: 'no-transport',
+      startedAtEpochMs: Date.now(),
+      client: { ip: '10.0.0.1' },
+    },
+    () =>
+      SpanEnricher.enrich(span, {}),
+  );
+
+  assert.equal(attributes.get('client.address'), '10.0.0.1');
+  assert.equal(attributes.get('transport.type'), 'internal');
+});
+
+test('span enrichment does not crash when no active context scope exists', () => {
+  const attributes = new Map();
+  const span = fakeSpan(attributes);
+
+  SpanEnricher.enrich(span, {
+    requestId: 'fallback-request',
+    correlationId: 'fallback-correlation',
+  });
+
+  assert.equal(attributes.get('request.id'), 'fallback-request');
+});
+
 test('legacy SpanEnricher input remains an operational fallback', () => {
   const attributes = new Map();
   SpanEnricher.enrich(fakeSpan(attributes), {

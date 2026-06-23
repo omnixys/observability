@@ -28,10 +28,10 @@ export class SpanEnricher {
       'tenant.id': canonical?.tenant?.tenantId ?? legacyContext?.tenantId,
       'actor.id': canonical?.principal?.actorId ?? legacyContext?.actorId,
       'user.id': userId,
-      'client.address': canonical?.client.ip,
-      'transport.type': canonical?.transport.type,
-      'transport.route': canonical?.transport.route,
-      'transport.operation': canonical?.transport.operation,
+      'client.address': canonical?.client?.ip,
+      'transport.type': canonical?.transport?.type,
+      'transport.route': canonical?.transport?.route,
+      'transport.operation': canonical?.transport?.operation,
     });
   }
 }
