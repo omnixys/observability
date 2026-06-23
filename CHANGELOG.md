@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.0](https://github.com/omnixys/observability/compare/v1.0.0...v2.0.0) (2026-06-23)
+
+### Observability
+
+* **Observability:** declare runtime peer dependencies ([](https://github.com/omnixys/observability/commit/3d1de16e9c987d15d6e1ca28833b29bf2ab5acdb))
+* **Observability:** migrate P0 request context ownership ([](https://github.com/omnixys/observability/commit/dd9a5a83469d4a5f592c41deba840a8e62b3124c))
+* **Observability:** build complete package artifacts ([](https://github.com/omnixys/observability/commit/fb9100a1d58e2827064aa10b843e4c4db4821640))
+* **Observability:** own one metrics exporter lifecycle ([](https://github.com/omnixys/observability/commit/e9fc183fe81f98d129b1b69a7fdbbfe63ac6ba38))
+* **Observability:** consume canonical log contracts ([](https://github.com/omnixys/observability/commit/bfc2b4de6b6db75a0680396869e6c559234c217c))
+
 ## 1.0.0 (2026-04-15)
 
 ### ⚠ BREAKING CHANGE
