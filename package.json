@@ -73,8 +73,8 @@
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "@omnixys/context": "^2.0.0",
-    "@omnixys/contracts": "^2.0.0",
+    "@omnixys/context": "^3.0.0",
+    "@omnixys/contracts": "^3.0.0",
     "@prisma/client": "^7.5.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
