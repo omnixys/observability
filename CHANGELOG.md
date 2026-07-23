@@ -3,6 +3,13 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.1.0](https://github.com/omnixys/observability/compare/v3.0.0...v3.1.0) (2026-07-23)
+
+### Observability
+
+* **Observability:** add OTel log exporter to NodeSDK ([](https://github.com/omnixys/observability/commit/2266246cc5198c05bfc95da83581ee2f859f836e))
+* **Observability:** export canonical OTLP logs ([](https://github.com/omnixys/observability/commit/16abeedf2959aa1764c8f0a7731cf9264f847986))
+
 ## [3.0.0](https://github.com/omnixys/observability/compare/v2.0.0...v3.0.0) (2026-07-15)
 
 ### Update
