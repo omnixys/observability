@@ -12,5 +12,9 @@ export interface ObservabilityModuleOptions {
     port?: number;
   };
 
+  logs?: {
+    enabled?: boolean;
+  };
+
   resourceAttributes?: Record<string, string>;
 }
