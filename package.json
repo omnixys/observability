@@ -104,7 +104,7 @@
     "@opentelemetry/auto-instrumentations-node": "^0.71.0",
     "@opentelemetry/context-async-hooks": "^2.6.0",
     "@opentelemetry/exporter-logs-otlp-grpc": "^0.213.0",
-    "@opentelemetry/exporter-logs-otlp-proto-http": "^0.213.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.213.0",
     "@opentelemetry/exporter-prometheus": "^0.213.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.213.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.213.0",

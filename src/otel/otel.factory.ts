@@ -3,7 +3,7 @@ import { AdaptiveSampler } from '../tracing/adaptive-sampler.js';
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { OTLPLogExporter as GrpcLogExporter } from '@opentelemetry/exporter-logs-otlp-grpc';
-import { OTLPLogExporter as HttpLogExporter } from '@opentelemetry/exporter-logs-otlp-proto-http';
+import { OTLPLogExporter as HttpLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPTraceExporter as GrpcExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { OTLPTraceExporter as HttpExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import {
@@ -31,16 +31,25 @@ export async function createOtelSDK(
       resourceFromAttributes({
         'service.name': options.serviceName,
         'service.namespace': 'omnixys',
+        'service.version':
+          process.env.OTEL_SERVICE_VERSION ??
+          process.env.npm_package_version ??
+          'unknown',
+        'deployment.environment.name':
+          process.env.DEPLOYMENT_ENVIRONMENT ??
+          process.env.NODE_ENV ??
+          'local',
         'service.instance.id': process.pid,
         ...options.resourceAttributes,
       }),
     );
 
   const isGrpc = options.otel.transport === 'grpc';
+  const endpoints = resolveOtlpSignalEndpoints(options.otel.endpoint, isGrpc);
 
   const traceExporter = isGrpc
-    ? new GrpcExporter({ url: options.otel.endpoint })
-    : new HttpExporter({ url: options.otel.endpoint });
+    ? new GrpcExporter({ url: endpoints.traces })
+    : new HttpExporter({ url: endpoints.traces });
 
   const contextManager = new AsyncLocalStorageContextManager();
   contextManager.enable();
@@ -53,8 +62,8 @@ export async function createOtelSDK(
     options.logs?.enabled !== false
       ? new BatchLogRecordProcessor(
           isGrpc
-            ? new GrpcLogExporter({ url: options.otel.endpoint })
-            : new HttpLogExporter({ url: options.otel.endpoint }),
+            ? new GrpcLogExporter({ url: endpoints.logs })
+            : new HttpLogExporter({ url: endpoints.logs }),
         )
       : undefined;
 
@@ -66,4 +75,32 @@ export async function createOtelSDK(
     metricReaders,
     logRecordProcessor,
   });
+}
+
+export interface OtlpSignalEndpoints {
+  readonly base: string;
+  readonly traces: string;
+  readonly logs: string;
+}
+
+/**
+ * Accepts the canonical OTLP base URL and remains compatible with the former
+ * TEMPO_URI value which ended in /v1/traces.
+ */
+export function resolveOtlpSignalEndpoints(
+  endpoint: string,
+  grpc = false,
+): OtlpSignalEndpoints {
+  const trimmed = endpoint.replace(/\/+$/, '');
+  const base = trimmed.replace(/\/v1\/(?:traces|logs)$/, '');
+
+  if (grpc) {
+    return { base, traces: base, logs: base };
+  }
+
+  return {
+    base,
+    traces: `${base}/v1/traces`,
+    logs: `${base}/v1/logs`,
+  };
 }
