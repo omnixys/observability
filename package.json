@@ -1,10 +1,10 @@
 {
   "name": "@omnixys/observability",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "type": "module",
   "private": false,
   "packageManager": "pnpm@10.33.0",
-  "description": "Omnixys Observability Package for Node.js applications, providing tracing, metrics and logging",
+  "description": "Omnixys Observability Package – tracing, metrics, logging, browser instrumentation, analytics, and feature flags",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -46,6 +46,34 @@
     "./metrics": {
       "types": "./dist/metrics/index.d.ts",
       "import": "./dist/metrics/index.js"
+    },
+    "./kafka": {
+      "types": "./dist/kafka/index.d.ts",
+      "import": "./dist/kafka/index.js"
+    },
+    "./cache": {
+      "types": "./dist/cache/index.d.ts",
+      "import": "./dist/cache/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./analytics/browser": {
+      "types": "./dist/analytics/browser.d.ts",
+      "import": "./dist/analytics/browser.js"
+    },
+    "./analytics/node": {
+      "types": "./dist/analytics/node.d.ts",
+      "import": "./dist/analytics/node.js"
+    },
+    "./feature-flags": {
+      "types": "./dist/feature-flags/index.d.ts",
+      "import": "./dist/feature-flags/index.js"
     }
   },
   "publishConfig": {
@@ -67,15 +95,22 @@
     "monitoring",
     "tracing",
     "metrics",
-    "microservices"
+    "microservices",
+    "browser",
+    "analytics",
+    "feature-flags"
   ],
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.1.17",
+    "@nestjs/graphql": "^13.2.4",
     "@omnixys/context": "^3.0.0",
     "@omnixys/contracts": "^3.0.0",
     "@prisma/client": "^7.5.0",
+    "@react-types/shared": "^3.30.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -84,10 +119,13 @@
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@swc/core": "^1.15.21",
     "@types/node": "^25.5.0",
+    "@types/react": "^19",
+    "fastify": "^5.8.2",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-sort-imports": "^1.8.11",
+    "react": "^19",
     "semantic-release": "^25.0.3",
     "tsup": "^8.5.1"
   },
@@ -99,20 +137,44 @@
     "@omnixys/contracts": "^2.0.0",
     "fastify": "^5.8.2"
   },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    },
+    "@nestjs/graphql": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.71.0",
     "@opentelemetry/context-async-hooks": "^2.6.0",
+    "@opentelemetry/context-zone-peer-dep": "^2.6.0",
     "@opentelemetry/exporter-logs-otlp-grpc": "^0.213.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.213.0",
     "@opentelemetry/exporter-prometheus": "^0.213.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.213.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.213.0",
+    "@opentelemetry/instrumentation": "^0.215.0",
+    "@opentelemetry/instrumentation-document-load": "^0.61.0",
+    "@opentelemetry/instrumentation-fetch": "^0.213.0",
+    "@opentelemetry/instrumentation-user-interaction": "^0.61.0",
+    "@opentelemetry/instrumentation-xml-http-request": "^0.213.0",
     "@opentelemetry/resources": "^2.6.0",
     "@opentelemetry/sdk-logs": "^0.213.0",
     "@opentelemetry/sdk-node": "^0.213.0",
     "@opentelemetry/sdk-trace-base": "^2.6.0",
+    "@opentelemetry/sdk-trace-web": "^2.6.0",
     "@opentelemetry/semantic-conventions": "^1.40.0",
-    "rxjs": "^7.8.2"
+    "posthog-js": "^1.300.0",
+    "posthog-node": "^4.10.0",
+    "rxjs": "^7.8.2",
+    "web-vitals": "^4.2.0"
   }
 }
