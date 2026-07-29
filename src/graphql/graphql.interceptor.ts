@@ -7,6 +7,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { ContextAccessor } from '@omnixys/context';
 import { trace } from '@opentelemetry/api';
 import { Observable, tap } from 'rxjs';
 
@@ -22,6 +23,9 @@ export class GraphQLInterceptor implements NestInterceptor {
 
     const gql = GqlExecutionContext.create(context);
     const info = gql.getInfo();
+    if (ContextAccessor.isActive()) {
+      ContextAccessor.update({ operation: info.fieldName });
+    }
 
     span.updateName(SpanNaming.graphql(info.parentType.name, info.fieldName));
 
