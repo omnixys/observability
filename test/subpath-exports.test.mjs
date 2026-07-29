@@ -15,9 +15,6 @@ const SUBPATH_MODULE_MAP = {
   './cache': '../dist/cache/index.js',
   './browser': '../dist/browser/index.js',
   './react': '../dist/react/index.js',
-  './analytics/browser': '../dist/analytics/browser.js',
-  './analytics/node': '../dist/analytics/node.js',
-  './feature-flags': '../dist/feature-flags/index.js',
 };
 
 test('all sub-path exports resolve and are ES modules', async () => {
@@ -32,24 +29,4 @@ test('browser entry point loads without NestJS deps', async () => {
   assert.equal(typeof mod.initializeBrowserTracing, 'function');
   assert.ok(!('ObservabilityModule' in mod));
   assert.ok(!('TraceInterceptor' in mod));
-});
-
-test('analytics/browser entry point loads without posthog-node', async () => {
-  const mod = await import('../dist/analytics/browser.js');
-  assert.equal(typeof mod.createBrowserAnalytics, 'function');
-  const source = mod.createBrowserAnalytics.toString();
-  assert.ok(!source.includes('posthog-node'), 'must not import posthog-node');
-});
-
-test('analytics/node entry point loads without posthog-js', async () => {
-  const mod = await import('../dist/analytics/node.js');
-  assert.equal(typeof mod.createNodeAnalytics, 'function');
-  const source = mod.createNodeAnalytics.toString();
-  assert.ok(!source.includes('posthog-js'), 'must not import posthog-js');
-});
-
-test('feature-flags entry point loads without NestJS deps', async () => {
-  const mod = await import('../dist/feature-flags/index.js');
-  assert.equal(typeof mod.createFeatureFlagClient, 'function');
-  assert.ok(!('ObservabilityModule' in mod));
 });

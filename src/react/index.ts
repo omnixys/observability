@@ -1,35 +1,30 @@
 import React from 'react';
-import { createContext, createElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import type { AnalyticsAdapter } from '../analytics/analytics-types.js';
-import type { FeatureFlagClient } from '../feature-flags/index.js';
+import { createContext, createElement, useContext, useEffect, useMemo, useRef } from 'react';
+import { SpanStatusCode, trace } from '@opentelemetry/api';
 import type { BrowserObservabilityConfig } from '../browser/index.js';
-import { initializeBrowserTracing } from '../browser/index.js';
+import {
+  clearUserOnSpan,
+  initializeBrowserTracing,
+  setUserOnSpan,
+} from '../browser/index.js';
 
 export interface ObservabilityConfig {
-  analytics?: AnalyticsAdapter;
-  featureFlags?: FeatureFlagClient;
   browser?: BrowserObservabilityConfig;
 }
 
 export interface ObservabilityAPI {
-  trackEvent: (name: string, properties?: Record<string, unknown>) => void;
   recordException: (error: Error, context?: Record<string, unknown>) => void;
   identifyUser: (userId: string, traits?: Record<string, unknown>) => void;
   resetUser: () => void;
-  isFeatureEnabled: (key: string, defaultValue?: boolean) => Promise<boolean>;
-  getFeatureFlagValue: <T>(key: string, defaultValue: T) => Promise<T>;
   capturePageView: (path: string, title?: string) => void;
   captureGraphQLOperation: (operation: string, durationMs: number, error?: Error) => void;
   startSpan: (name: string) => { end: () => void };
 }
 
 const NoopAPI: ObservabilityAPI = {
-  trackEvent: () => {},
   recordException: () => {},
   identifyUser: () => {},
   resetUser: () => {},
-  isFeatureEnabled: async (_key, defaultValue) => defaultValue ?? false,
-  getFeatureFlagValue: async (_key, defaultValue) => defaultValue,
   capturePageView: () => {},
   captureGraphQLOperation: () => {},
   startSpan: () => ({ end: () => {} }),
@@ -46,8 +41,6 @@ export function ObservabilityProvider({
   children,
   config,
 }: ObservabilityProviderProps): React.ReactElement {
-  const analytics = config.analytics;
-  const featureFlags = config.featureFlags;
   const browserConfig = config.browser;
 
   useEffect(() => {
@@ -58,100 +51,54 @@ export function ObservabilityProvider({
 
   const api: ObservabilityAPI = useMemo(() => {
     const adapter: ObservabilityAPI = {
-      trackEvent: (name, properties) => {
-        analytics?.trackEvent({ name, properties });
-      },
-
       recordException: (error, context) => {
-        analytics?.trackEvent({
-          name: '$exception',
-          properties: {
-            message: error.message,
-            name: error.name,
-            stack: error.stack,
-            ...context,
-          },
-        });
+        const span = trace.getActiveSpan();
+        span?.recordException(error);
+        span?.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+        setSafeAttributes(span, context);
       },
 
       identifyUser: (userId, traits) => {
-        analytics?.identifyUser({ userId, traits });
+        setUserOnSpan(userId, traits);
       },
 
       resetUser: () => {
-        analytics?.resetUser();
-      },
-
-      isFeatureEnabled: async (key, defaultValue) => {
-        return featureFlags?.isEnabled(key, defaultValue) ?? defaultValue ?? false;
-      },
-
-      getFeatureFlagValue: async (key, defaultValue) => {
-        return featureFlags?.getValue(key, defaultValue) ?? defaultValue;
+        clearUserOnSpan();
       },
 
       capturePageView: (path, title) => {
-        analytics?.trackEvent({
-          name: '$pageview',
-          properties: { path, title },
-        });
+        const span = trace.getTracer('omnixys-browser').startSpan('navigation');
+        span.setAttribute('url.path', path);
+        if (title) span.setAttribute('document.title', title);
+        span.end();
       },
 
       captureGraphQLOperation: (operation, durationMs, error) => {
-        analytics?.trackEvent({
-          name: '$graphql_operation',
-          properties: {
-            operation,
-            durationMs,
-            error: error?.message,
-            errorName: error?.name,
-          },
-        });
+        const span = trace.getTracer('omnixys-browser').startSpan(`graphql ${operation}`);
+        span.setAttribute('graphql.operation.name', operation);
+        span.setAttribute('graphql.duration_ms', durationMs);
+        if (error) {
+          span.recordException(error);
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+        }
+        span.end();
       },
 
       startSpan: (name) => {
-        let ended = false;
+        const span = trace.getTracer('omnixys-browser').startSpan(name);
         return {
-          end: () => {
-            if (!ended) {
-              ended = true;
-              analytics?.trackEvent({
-                name: '$span',
-                properties: { spanName: name },
-              });
-            }
-          },
+          end: () => span.end(),
         };
       },
     };
     return adapter;
-  }, [analytics, featureFlags]);
+  }, []);
 
   return createElement(ObservabilityContext.Provider, { value: api }, children);
 }
 
 export function useTelemetry(): ObservabilityAPI {
   return useContext(ObservabilityContext);
-}
-
-export function useFeatureFlag(
-  key: string,
-  defaultValue?: boolean,
-): boolean {
-  const telemetry = useTelemetry();
-  const [flag, setFlag] = useState<boolean>(defaultValue ?? false);
-  const telemetryRef = useRef(telemetry);
-  telemetryRef.current = telemetry;
-
-  useEffect(() => {
-    let cancelled = false;
-    telemetry.isFeatureEnabled(key, defaultValue).then((result) => {
-      if (!cancelled) setFlag(result);
-    });
-    return () => { cancelled = true; };
-  }, [key, defaultValue, telemetry]);
-
-  return flag;
 }
 
 export function useTelemetryPageView(): void {
@@ -165,6 +112,22 @@ export function useTelemetryPageView(): void {
       telemetry.capturePageView(path, document.title);
     }
   });
+}
+
+function setSafeAttributes(
+  span: ReturnType<typeof trace.getActiveSpan>,
+  attributes?: Record<string, unknown>,
+): void {
+  if (!span || !attributes) return;
+  for (const [key, value] of Object.entries(attributes)) {
+    if (
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      typeof value === 'boolean'
+    ) {
+      span.setAttribute(key, value);
+    }
+  }
 }
 
 export function withObservability<P extends Record<string, unknown>>(

@@ -5,7 +5,6 @@ test('react module exports expected API', async () => {
   const mod = await import('../dist/react/index.js');
   assert.equal(typeof mod.ObservabilityProvider, 'function');
   assert.equal(typeof mod.useTelemetry, 'function');
-  assert.equal(typeof mod.useFeatureFlag, 'function');
   assert.equal(typeof mod.useTelemetryPageView, 'function');
   assert.equal(typeof mod.withObservability, 'function');
   assert.equal(typeof mod.ObservabilityErrorBoundary, 'function');
