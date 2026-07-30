@@ -3,6 +3,26 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.0](https://github.com/omnixys/observability-ts/compare/v3.1.0...v3.2.0) (2026-07-30)
+
+### ⚠ BREAKING CHANGE
+
+* **Observability:** PostHog analytics and feature-flag adapters have been removed. Use @omnixys/analytics-sdk instead.
+
+### Graphql
+
+* **Graphql:** capture resolver operation context ([](https://github.com/omnixys/observability-ts/commit/888c6cad4718da08877732cdabe60c569586dc69))
+
+### Observability
+
+* **Observability:** add browser, react, analytics, and feature-flags modules ([](https://github.com/omnixys/observability-ts/commit/62a49e47f3bc0307a111f81ffadaf26587d62821))
+* **Observability:** remove product analytics adapters ([](https://github.com/omnixys/observability-ts/commit/90e4f5c9777574de228ce8a5dbd484a847d0710c))
+
+### Rename
+
+* **Rename:** rename repo ([](https://github.com/omnixys/observability-ts/commit/63ac78845affeef331a2242efc8144c377b784ba))
+* **Rename:** rename repo ([](https://github.com/omnixys/observability-ts/commit/6ff8df096f6d0855acca180d97656da5af191707))
+
 ## [3.1.0](https://github.com/omnixys/observability/compare/v3.0.0...v3.1.0) (2026-07-23)
 
 ### Observability
