@@ -4,7 +4,7 @@ import {
   JwtContextExtractor,
   RequestContextService,
 } from '../dist/context/index.js';
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 

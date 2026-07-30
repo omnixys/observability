@@ -1,4 +1,4 @@
-import type { PrincipalContext } from '@omnixys/context';
+import type { PrincipalContext } from '@omnixys/context-ts';
 import type { FastifyRequest } from 'fastify';
 
 /**

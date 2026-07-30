@@ -1,5 +1,5 @@
 import { SpanEnricher } from '../dist/tracing/span-enricher.js';
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 

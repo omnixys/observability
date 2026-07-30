@@ -1,6 +1,6 @@
 import { ClsService, CorrelationIdService } from '../dist/context/index.js';
 import { registerCorrelation } from '../dist/http/correlation.hook.js';
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 

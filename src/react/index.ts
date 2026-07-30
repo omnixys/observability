@@ -30,7 +30,7 @@ const NoopAPI: ObservabilityAPI = {
   startSpan: () => ({ end: () => {} }),
 };
 
-const ObservabilityContext = createContext<ObservabilityAPI>(NoopAPI);
+export const ObservabilityContext = createContext<ObservabilityAPI>(NoopAPI);
 
 export interface ObservabilityProviderProps {
   children: React.ReactNode;

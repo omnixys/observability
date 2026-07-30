@@ -1,4 +1,4 @@
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import type { Attributes, Span } from '@opentelemetry/api';
 
 /** Adds safe request metadata from the canonical context to an OTel span. */

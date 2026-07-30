@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ContextAccessor, type RequestContext } from '@omnixys/context';
+import { ContextAccessor, type RequestContext } from '@omnixys/context-ts';
 import { context } from '@opentelemetry/api';
 
 const KEY_ALIASES: Readonly<Record<string, keyof RequestContext>> = {
@@ -11,7 +11,7 @@ const KEY_ALIASES: Readonly<Record<string, keyof RequestContext>> = {
 /**
  * Compatibility facade over the canonical Omnixys request context.
  *
- * @deprecated Prefer `ContextAccessor` from `@omnixys/context` for new code.
+ * @deprecated Prefer `ContextAccessor` from `@omnixys/context-ts` for new code.
  */
 @Injectable()
 export class ClsService {

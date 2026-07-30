@@ -1,5 +1,5 @@
 {
-  "name": "@omnixys/observability",
+  "name": "@omnixys/observability-ts",
   "version": "4.0.0",
   "type": "module",
   "private": false,
@@ -93,8 +93,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/context": "^3.0.0",
-    "@omnixys/contracts": "^3.0.0",
+    "@omnixys/context-ts": "^3.0.0",
+    "@omnixys/contracts-ts": "^3.0.0",
     "@prisma/client": "^7.5.0",
     "@react-types/shared": "^3.30.0",
     "@semantic-release/changelog": "^6.0.3",
@@ -119,8 +119,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/context": "^2.0.0",
-    "@omnixys/contracts": "^2.0.0",
+    "@omnixys/context-ts": "^2.0.0",
+    "@omnixys/contracts-ts": "^2.0.0",
     "fastify": "^5.8.2"
   },
   "peerDependenciesMeta": {

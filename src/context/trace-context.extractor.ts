@@ -1,4 +1,4 @@
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import { context, trace } from '@opentelemetry/api';
 
 export class TraceContextExtractor {

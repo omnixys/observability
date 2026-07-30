@@ -5,7 +5,7 @@ import {
 import { OtelLogger } from '../dist/logging/otel-logger.service.js';
 import { TraceInterceptor } from '../dist/tracing/trace.interceptor.js';
 import { TraceService } from '../dist/tracing/trace.service.js';
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import { context, SpanStatusCode, trace } from '@opentelemetry/api';
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
 import {

@@ -3,7 +3,7 @@ import {
   ContextAccessor,
   DefaultCorrelationIdResolver,
   DefaultRequestIdResolver,
-} from '@omnixys/context';
+} from '@omnixys/context-ts';
 import type { FastifyInstance } from 'fastify';
 
 const requestIdResolver = new DefaultRequestIdResolver();

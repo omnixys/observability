@@ -1,7 +1,7 @@
 import { SpanEnricher } from '../tracing/span-enricher.js';
 import { ErrorClassifier } from './error-classifier.js';
 import { Injectable } from '@nestjs/common';
-import { LogLevel } from '@omnixys/contracts';
+import { LogLevel } from '@omnixys/contracts-ts';
 import { trace } from '@opentelemetry/api';
 
 @Injectable()

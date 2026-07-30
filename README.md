@@ -1,6 +1,6 @@
-# @omnixys/observability
+# @omnixys/observability-ts
 
-![version](https://img.shields.io/npm/v/@omnixys/observability)
+![version](https://img.shields.io/npm/v/@omnixys/observability-ts)
 ![license](https://img.shields.io/badge/license-GPL--3.0-blue)
 
 Unified observability module for Omnixys microservices.
@@ -40,7 +40,7 @@ Provides:
 ## 📦 Installation
 
 ```bash
-pnpm add @omnixys/observability
+pnpm add @omnixys/observability-ts
 ````
 
 ---
@@ -48,7 +48,7 @@ pnpm add @omnixys/observability
 ## ⚙️ Setup
 
 ```ts
-import { ObservabilityModule } from '@omnixys/observability';
+import { ObservabilityModule } from '@omnixys/observability-ts';
 
 @Module({
   imports: [
@@ -80,7 +80,7 @@ export class AppModule {}
 ### Logger
 
 ```ts
-import { OmnixysLogger } from '@omnixys/observability';
+import { OmnixysLogger } from '@omnixys/observability-ts';
 
 @Injectable()
 export class AuthService {

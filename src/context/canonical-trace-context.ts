@@ -1,4 +1,4 @@
-import { ContextAccessor } from '@omnixys/context';
+import { ContextAccessor } from '@omnixys/context-ts';
 import type { Span } from '@opentelemetry/api';
 
 /** Runs work with the active OTel identifiers exposed as plain context metadata. */

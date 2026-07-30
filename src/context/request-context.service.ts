@@ -2,7 +2,7 @@ import { ClsService } from './cls.service.js';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-/** @deprecated Prefer `ContextAccessor` from `@omnixys/context`. */
+/** @deprecated Prefer `ContextAccessor` from `@omnixys/context-ts`. */
 export class RequestContextService {
   constructor(private readonly cls: ClsService) {}
 
