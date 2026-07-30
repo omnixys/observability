@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.1](https://github.com/omnixys/observability-ts/compare/v3.2.0...v3.2.1) (2026-07-30)
+
+### Deps
+
+* **Deps:** fix imports ([](https://github.com/omnixys/observability-ts/commit/e39799c052655b20a3baff2a5532d30359a2de78))
+
 ## [3.2.0](https://github.com/omnixys/observability-ts/compare/v3.1.0...v3.2.0) (2026-07-30)
 
 ### ⚠ BREAKING CHANGE
