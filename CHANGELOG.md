@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.2](https://github.com/omnixys/observability-ts/compare/v3.2.1...v3.2.2) (2026-08-01)
+
+### Deps
+
+* **Deps:** update omnixs package deps ([](https://github.com/omnixys/observability-ts/commit/a0f467a37df79eeb05f07dc1ac218fc82909ef8b))
+
+### Name
+
+* **Name:** update package name ([](https://github.com/omnixys/observability-ts/commit/be809647804bd423cc662e6f7ed9802a12d3542e))
+
 ## [3.2.1](https://github.com/omnixys/observability-ts/compare/v3.2.0...v3.2.1) (2026-07-30)
 
 ### Deps
