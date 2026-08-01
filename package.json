@@ -119,8 +119,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/context-ts": "^3.0.2",
-    "@omnixys/contracts-ts": "^3.2.3",
+    "@omnixys/context-ts": "^3.1.0",
+    "@omnixys/contracts-ts": "^3.3.0",
     "fastify": "^5.8.2"
   },
   "peerDependenciesMeta": {

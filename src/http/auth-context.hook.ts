@@ -3,7 +3,7 @@ import type { RequestContextService } from '../context/request-context.service.j
 import type { FastifyInstance } from 'fastify';
 
 /**
- * @deprecated Verified principals are bridged by `@omnixys/security` and
+ * @deprecated Verified principals are bridged by `@omnixys/security-ts` and
  * consumed by `ContextModule`.
  */
 export function registerAuthContext(

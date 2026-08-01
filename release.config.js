@@ -178,7 +178,7 @@ export default {
 ---
 
 🏢 **Organization:** Omnixys
-📦 **Package:** Observability
+📦 **Package:** Observability TS
 🔗 **Repository:** Repository: <%= options.repositoryUrl %>
 🧭 **Docs:** https://omnixys.com/docs
 `,
