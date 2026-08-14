@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.3](https://github.com/omnixys/observability-ts/compare/v3.2.2...v3.2.3) (2026-08-14)
+
+### Browser
+
+* **Browser:** use default context manager, drop zone.js requirement ([](https://github.com/omnixys/observability-ts/commit/37e70558bd63b6df146a889cfbe534ede23bd814))
+
 ## [3.2.2](https://github.com/omnixys/observability-ts/compare/v3.2.1...v3.2.2) (2026-08-01)
 
 ### Deps
