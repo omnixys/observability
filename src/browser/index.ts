@@ -7,7 +7,6 @@ export interface BrowserObservabilityConfig {
   sampleRate?: number;
   otlpEndpoint?: string;
   instrumentations?: BrowserInstrumentation[];
-  propagateTraceHeaderCorsUrls?: string | RegExp;
   enabled?: boolean;
 }
 
@@ -24,7 +23,6 @@ export async function initializeBrowserTracing(
     sampleRate: config.sampleRate ?? 0.1,
     otlpEndpoint: config.otlpEndpoint ?? '/otel/v1/traces',
     instrumentations: config.instrumentations ?? ['fetch'],
-    propagateTraceHeaderCorsUrls: config.propagateTraceHeaderCorsUrls ?? /.*/,
     enabled: config.enabled ?? false,
   };
 
@@ -83,7 +81,7 @@ export async function initializeBrowserTracing(
           instrumentations.push(
             new FetchInstrumentation({
               ignoreUrls: [resolvedConfig.otlpEndpoint],
-              propagateTraceHeaderCorsUrls: resolvedConfig.propagateTraceHeaderCorsUrls,
+              propagateTraceHeaderCorsUrls: /.*/,
               clearTimingResources: true,
             }),
           );
