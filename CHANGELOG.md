@@ -3,12 +3,6 @@
 All notable changes in this project will be documented in this file.
 
 
-## [3.3.0](https://github.com/omnixys/observability-ts/compare/v3.2.3...v3.3.0) (2026-08-14)
-
-### Browser
-
-* **Browser:** make trace-header CORS propagation configurable ([](https://github.com/omnixys/observability-ts/commit/ced1c3263112b421e46cb0741616f28496c90f71))
-
 ## [3.2.3](https://github.com/omnixys/observability-ts/compare/v3.2.2...v3.2.3) (2026-08-14)
 
 ### Browser
