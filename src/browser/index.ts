@@ -1,4 +1,4 @@
-import { context, diag, trace } from '@opentelemetry/api';
+import { diag, trace } from '@opentelemetry/api';
 import type { Span } from '@opentelemetry/api';
 
 export interface BrowserObservabilityConfig {
@@ -35,9 +35,6 @@ export async function initializeBrowserTracing(
   }
 
   try {
-    const { ZoneContextManager } = await import(
-      '@opentelemetry/context-zone-peer-dep'
-    );
     const { registerInstrumentations } = await import(
       '@opentelemetry/instrumentation'
     );
@@ -118,9 +115,7 @@ export async function initializeBrowserTracing(
       instrumentations: instrumentations as any,
     });
 
-    provider.register({
-      contextManager: new ZoneContextManager(),
-    });
+    provider.register({});
 
     shutdownFn = async () => {
       await provider.shutdown();
