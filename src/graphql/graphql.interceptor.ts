@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ContextAccessor } from '@omnixys/context-ts';
-import { trace } from '@opentelemetry/api';
+import { trace, type Span } from '@opentelemetry/api';
 import { Observable, tap } from 'rxjs';
 
 @Injectable()
@@ -38,11 +38,32 @@ export class GraphQLInterceptor implements NestInterceptor {
           .handle()
           .pipe(
             tap({
-              error: (err) => span.recordException(err),
+              error: (err) => {
+                attachTraceContext(err, span);
+                span.recordException(err);
+              },
             }),
           )
           .subscribe(subscriber),
       ),
     );
+  }
+}
+
+/**
+ * GraphQL formats errors after a resolver's async scope has completed. Keep the
+ * active trace identifiers on the thrown object so the formatter and logger can
+ * retain the real trace without inventing one from request metadata.
+ */
+function attachTraceContext(error: unknown, span: Span): void {
+  if (!error || typeof error !== 'object') return;
+
+  const { traceId, spanId } = span.spanContext();
+  const target = error as { traceId?: unknown; spanId?: unknown };
+  if (typeof target.traceId !== 'string' || target.traceId.length === 0) {
+    target.traceId = traceId;
+  }
+  if (typeof target.spanId !== 'string' || target.spanId.length === 0) {
+    target.spanId = spanId;
   }
 }
