@@ -3,6 +3,20 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.2](https://github.com/omnixys/observability-ts/compare/v3.3.1...v3.3.2) (2026-08-22)
+
+### Agent
+
+* **Agent:** add repository development instructions ([](https://github.com/omnixys/observability-ts/commit/5ae3dc936c19e55386fb34bde5c2ff7a157c92bd))
+
+### Dir
+
+* **Dir:** remove target dir ([](https://github.com/omnixys/observability-ts/commit/276099fba4a6d54cc2318388d0c2067113484108))
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/observability-ts ([](https://github.com/omnixys/observability-ts/commit/6de931e6bc4f763c605f48a9b4b3a41a9ee20be3))
+
 ## [3.3.1](https://github.com/omnixys/observability-ts/compare/v3.3.0...v3.3.1) (2026-08-14)
 
 ### Other
