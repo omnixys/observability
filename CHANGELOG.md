@@ -3,6 +3,15 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.1](https://github.com/omnixys/observability-ts/compare/v3.3.0...v3.3.1) (2026-08-14)
+
+### Other
+
+* **Other:** Revert "chore(release): 3.2.3 [skip ci]" ([](https://github.com/omnixys/observability-ts/commit/a6a8706c27fa1186c83a2ef87dd5fc7bc3e8087c))
+* **Other:** Revert "chore(release): 3.3.0 [skip ci]" ([](https://github.com/omnixys/observability-ts/commit/dda139d6e8effe61bf4b36cf20ce1116773aa6e0))
+* **Other:** Revert "feat(browser): make trace-header CORS propagation configurable" ([](https://github.com/omnixys/observability-ts/commit/29abb9a3051981e05de92574b0dae9f9c5c3f0c3))
+* **Other:** Revert "fix(browser): use default context manager, drop zone.js requirement" ([](https://github.com/omnixys/observability-ts/commit/7cfa3d8a60afc6b1d91672aaabeb8ab9397588a6))
+
 ## [3.2.2](https://github.com/omnixys/observability-ts/compare/v3.2.1...v3.2.2) (2026-08-01)
 
 ### Deps
