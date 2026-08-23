@@ -9,7 +9,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ContextAccessor } from '@omnixys/context-ts';
 import { trace, type Span } from '@opentelemetry/api';
-import { Observable, tap } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
 
 @Injectable()
 export class GraphQLInterceptor implements NestInterceptor {
@@ -18,33 +18,45 @@ export class GraphQLInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    const span = trace.getActiveSpan();
-    if (!span) return next.handle();
-
     const gql = GqlExecutionContext.create(context);
     const info = gql.getInfo();
     if (ContextAccessor.isActive()) {
       ContextAccessor.update({ operation: info.fieldName });
     }
 
-    span.updateName(SpanNaming.graphql(info.parentType.name, info.fieldName));
+    const activeSpan = trace.getActiveSpan();
+    const execute = (span: Span, owned: boolean) => {
+      span.updateName(SpanNaming.graphql(info.parentType.name, info.fieldName));
+      span.setAttribute('graphql.field', info.fieldName);
+      span.setAttribute('graphql.type', info.parentType.name);
 
-    span.setAttribute('graphql.field', info.fieldName);
-    span.setAttribute('graphql.type', info.parentType.name);
+      return new Observable((subscriber) =>
+        runWithCanonicalTrace(span, () =>
+          next
+            .handle()
+            .pipe(
+              tap({
+                error: (err) => {
+                  attachTraceContext(err, span, info.fieldName);
+                  span.recordException(err);
+                },
+              }),
+              finalize(() => {
+                if (owned) span.end();
+              }),
+            )
+            .subscribe(subscriber),
+        ),
+      );
+    };
 
+    if (activeSpan) return execute(activeSpan, false);
+
+    const tracer = trace.getTracer('graphql');
     return new Observable((subscriber) =>
-      runWithCanonicalTrace(span, () =>
-        next
-          .handle()
-          .pipe(
-            tap({
-              error: (err) => {
-                attachTraceContext(err, span);
-                span.recordException(err);
-              },
-            }),
-          )
-          .subscribe(subscriber),
+      tracer.startActiveSpan(
+        SpanNaming.graphql(info.parentType.name, info.fieldName),
+        (span) => execute(span, true).subscribe(subscriber),
       ),
     );
   }
@@ -55,15 +67,26 @@ export class GraphQLInterceptor implements NestInterceptor {
  * active trace identifiers on the thrown object so the formatter and logger can
  * retain the real trace without inventing one from request metadata.
  */
-function attachTraceContext(error: unknown, span: Span): void {
+export function attachTraceContext(
+  error: unknown,
+  span: Span,
+  operation: string,
+): void {
   if (!error || typeof error !== 'object') return;
 
   const { traceId, spanId } = span.spanContext();
-  const target = error as { traceId?: unknown; spanId?: unknown };
+  const target = error as {
+    traceId?: unknown;
+    spanId?: unknown;
+    operation?: unknown;
+  };
   if (typeof target.traceId !== 'string' || target.traceId.length === 0) {
     target.traceId = traceId;
   }
   if (typeof target.spanId !== 'string' || target.spanId.length === 0) {
     target.spanId = spanId;
+  }
+  if (typeof target.operation !== 'string' || target.operation.length === 0) {
+    target.operation = operation;
   }
 }

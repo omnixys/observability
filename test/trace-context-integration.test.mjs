@@ -2,6 +2,7 @@ import {
   runWithCanonicalTrace,
   TraceContextExtractor,
 } from '../dist/context/index.js';
+import { attachTraceContext } from '../dist/graphql/graphql.interceptor.js';
 import { OtelLogger } from '../dist/logging/otel-logger.service.js';
 import { TraceInterceptor } from '../dist/tracing/trace.interceptor.js';
 import { TraceService } from '../dist/tracing/trace.service.js';
@@ -99,6 +100,21 @@ test('plain trace metadata is scoped and restored', async () => {
 
     assert.equal(ContextAccessor.getOrThrow().trace, undefined);
   });
+});
+
+test('GraphQL errors retain trace, span, and resolver operation metadata', () => {
+  const error = new Error('provider unavailable');
+  attachTraceContext(
+    error,
+    {
+      spanContext: () => ({ traceId: 'trace-graphql', spanId: 'span-graphql' }),
+    },
+    'credentialsLogin',
+  );
+
+  assert.equal(error.traceId, 'trace-graphql');
+  assert.equal(error.spanId, 'span-graphql');
+  assert.equal(error.operation, 'credentialsLogin');
 });
 
 function baseSnapshot() {
