@@ -1,4 +1,5 @@
 import { SpanEnricher } from '../tracing/span-enricher.js';
+import { setRequestTraceContext } from '@omnixys/context-ts';
 import {
   context,
   propagation,
@@ -34,6 +35,8 @@ export function registerFastifyTracing(app: FastifyInstance) {
 
       context.with(ctxWithSpan, () => {
         (req as any).__span = span;
+        const { traceId, spanId } = span.spanContext();
+        setRequestTraceContext(req, { traceId, spanId });
 
         boundDone();
       });
