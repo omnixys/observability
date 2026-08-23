@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.5](https://github.com/omnixys/observability-ts/compare/v3.3.4...v3.3.5) (2026-08-23)
+
+### Observability
+
+* **Observability:** expose Fastify trace metadata ([](https://github.com/omnixys/observability-ts/commit/6cc2cffb9b1970baa527c5aa6124524bdd3449a8))
+
+### Other
+
+* **Other:** Update pnpm-lock.yaml ([](https://github.com/omnixys/observability-ts/commit/c2fedb8e9168955831c9afa2c01d1a89ae759d9c))
+
 ## [3.3.4](https://github.com/omnixys/observability-ts/compare/v3.3.3...v3.3.4) (2026-08-23)
 
 ### Observability
