@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.3](https://github.com/omnixys/observability-ts/compare/v3.3.2...v3.3.3) (2026-08-23)
+
+### Observability
+
+* **Observability:** attach GraphQL trace context ([](https://github.com/omnixys/observability-ts/commit/614e53d92b6718e63d8fca77a858a8615ebcd80f))
+
 ## [3.3.2](https://github.com/omnixys/observability-ts/compare/v3.3.1...v3.3.2) (2026-08-22)
 
 ### Agent
