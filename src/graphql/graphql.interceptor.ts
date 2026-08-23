@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ContextAccessor } from '@omnixys/context-ts';
-import { trace, type Span } from '@opentelemetry/api';
+import { SpanStatusCode, trace, type Span } from '@opentelemetry/api';
 import { Observable, finalize, tap } from 'rxjs';
 
 @Injectable()
@@ -31,22 +31,25 @@ export class GraphQLInterceptor implements NestInterceptor {
       span.setAttribute('graphql.type', info.parentType.name);
 
       return new Observable((subscriber) =>
-        runWithCanonicalTrace(span, () =>
-          next
-            .handle()
-            .pipe(
-              tap({
-                error: (err) => {
-                  attachTraceContext(err, span, info.fieldName);
-                  span.recordException(err);
-                },
-              }),
-              finalize(() => {
-                if (owned) span.end();
-              }),
-            )
-            .subscribe(subscriber),
-        ),
+        runWithCanonicalTrace(span, () => {
+          try {
+            next
+              .handle()
+              .pipe(
+                tap({
+                  error: (err) => recordGraphQLError(err, span, info.fieldName),
+                }),
+                finalize(() => {
+                  if (owned) span.end();
+                }),
+              )
+              .subscribe(subscriber);
+          } catch (err) {
+            recordGraphQLError(err, span, info.fieldName);
+            if (owned) span.end();
+            subscriber.error(err);
+          }
+        }),
       );
     };
 
@@ -89,4 +92,17 @@ export function attachTraceContext(
   if (typeof target.operation !== 'string' || target.operation.length === 0) {
     target.operation = operation;
   }
+}
+
+function recordGraphQLError(
+  error: unknown,
+  span: Span,
+  operation: string,
+): void {
+  attachTraceContext(error, span, operation);
+  span.recordException(error as Error);
+  span.setStatus({
+    code: SpanStatusCode.ERROR,
+    message: error instanceof Error ? error.message : String(error),
+  });
 }
