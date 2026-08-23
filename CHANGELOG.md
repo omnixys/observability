@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.4](https://github.com/omnixys/observability-ts/compare/v3.3.3...v3.3.4) (2026-08-23)
+
+### Observability
+
+* **Observability:** capture synchronous GraphQL errors ([](https://github.com/omnixys/observability-ts/commit/47c67ec128c2aa26c59e173c4925b6ae613bd507))
+
 ## [3.3.3](https://github.com/omnixys/observability-ts/compare/v3.3.2...v3.3.3) (2026-08-23)
 
 ### Observability
