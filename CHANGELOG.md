@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.3.6](https://github.com/omnixys/observability-ts/compare/v3.3.5...v3.3.6) (2026-08-23)
+
+### Context
+
+* **Context:** deps ([](https://github.com/omnixys/observability-ts/commit/3a7a9216cd9f7f11b36a28485e32a1ec7f0b6ce5))
+
 ## [3.3.5](https://github.com/omnixys/observability-ts/compare/v3.3.4...v3.3.5) (2026-08-23)
 
 ### Observability
