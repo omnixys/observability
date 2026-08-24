@@ -1,4 +1,4 @@
-import { context, diag, trace } from '@opentelemetry/api';
+import { diag, trace } from '@opentelemetry/api';
 import type { Span } from '@opentelemetry/api';
 
 export interface BrowserObservabilityConfig {
@@ -10,7 +10,8 @@ export interface BrowserObservabilityConfig {
   enabled?: boolean;
 }
 
-export type BrowserInstrumentation = 'fetch' | 'xhr' | 'document-load' | 'user-interaction';
+export type BrowserInstrumentation =
+  'fetch' | 'xhr' | 'document-load' | 'user-interaction';
 
 let shutdownFn: (() => Promise<void>) | null = null;
 
@@ -35,27 +36,17 @@ export async function initializeBrowserTracing(
   }
 
   try {
-    const { ZoneContextManager } = await import(
-      '@opentelemetry/context-zone-peer-dep'
-    );
-    const { registerInstrumentations } = await import(
-      '@opentelemetry/instrumentation'
-    );
-    const { resourceFromAttributes, defaultResource } = await import(
-      '@opentelemetry/resources'
-    );
-    const { ATTR_SERVICE_NAME } = await import(
-      '@opentelemetry/semantic-conventions'
-    );
-    const { OTLPTraceExporter } = await import(
-      '@opentelemetry/exporter-trace-otlp-http'
-    );
-    const { SimpleSpanProcessor } = await import(
-      '@opentelemetry/sdk-trace-base'
-    );
-    const { WebTracerProvider } = await import(
-      '@opentelemetry/sdk-trace-web'
-    );
+    const { registerInstrumentations } =
+      await import('@opentelemetry/instrumentation');
+    const { resourceFromAttributes, defaultResource } =
+      await import('@opentelemetry/resources');
+    const { ATTR_SERVICE_NAME } =
+      await import('@opentelemetry/semantic-conventions');
+    const { OTLPTraceExporter } =
+      await import('@opentelemetry/exporter-trace-otlp-http');
+    const { SimpleSpanProcessor } =
+      await import('@opentelemetry/sdk-trace-base');
+    const { WebTracerProvider } = await import('@opentelemetry/sdk-trace-web');
 
     const resource = defaultResource().merge(
       resourceFromAttributes({
@@ -78,9 +69,8 @@ export async function initializeBrowserTracing(
     for (const name of resolvedConfig.instrumentations) {
       switch (name) {
         case 'fetch': {
-          const { FetchInstrumentation } = await import(
-            '@opentelemetry/instrumentation-fetch'
-          );
+          const { FetchInstrumentation } =
+            await import('@opentelemetry/instrumentation-fetch');
           instrumentations.push(
             new FetchInstrumentation({
               ignoreUrls: [resolvedConfig.otlpEndpoint],
@@ -91,23 +81,24 @@ export async function initializeBrowserTracing(
           break;
         }
         case 'xhr': {
-          const { XMLHttpRequestInstrumentation } = await import(
-            '@opentelemetry/instrumentation-xml-http-request'
-          );
+          const { XMLHttpRequestInstrumentation } =
+            await import('@opentelemetry/instrumentation-xml-http-request');
           instrumentations.push(new XMLHttpRequestInstrumentation());
           break;
         }
         case 'document-load': {
-          const { DocumentLoadInstrumentation } = await import(
-            '@opentelemetry/instrumentation-document-load'
-          );
+          const { DocumentLoadInstrumentation } =
+            await import('@opentelemetry/instrumentation-document-load');
           instrumentations.push(new DocumentLoadInstrumentation());
           break;
         }
         case 'user-interaction': {
-          const { UserInteractionInstrumentation } = await import(
-            '@opentelemetry/instrumentation-user-interaction'
+          diag.warn(
+            "'user-interaction' instrumentation expects zone-based context binding. " +
+              'Load the zone.js polyfill in the host application before enabling it.',
           );
+          const { UserInteractionInstrumentation } =
+            await import('@opentelemetry/instrumentation-user-interaction');
           instrumentations.push(new UserInteractionInstrumentation());
           break;
         }
@@ -118,9 +109,7 @@ export async function initializeBrowserTracing(
       instrumentations: instrumentations as any,
     });
 
-    provider.register({
-      contextManager: new ZoneContextManager(),
-    });
+    provider.register({});
 
     shutdownFn = async () => {
       await provider.shutdown();
@@ -137,7 +126,10 @@ export function getActiveSpan(): Span | undefined {
   return trace.getActiveSpan();
 }
 
-export function setUserOnSpan(userId: string, traits?: Record<string, unknown>): void {
+export function setUserOnSpan(
+  userId: string,
+  traits?: Record<string, unknown>,
+): void {
   const span = getActiveSpan();
   if (span) {
     span.setAttribute('enduser.id', userId);
