@@ -5,14 +5,22 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
+  Optional,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ContextAccessor } from '@omnixys/context-ts';
+import { OmnixysLogger, type ScopedLogger } from '@omnixys/logger-ts';
 import { SpanStatusCode, trace, type Span } from '@opentelemetry/api';
 import { Observable, finalize, tap } from 'rxjs';
 
 @Injectable()
 export class GraphQLInterceptor implements NestInterceptor {
+  private readonly log;
+
+  constructor(@Optional() private readonly logger?: OmnixysLogger) {
+    this.log = this.logger?.log(this.constructor.name);
+  }
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     if (context.getType<'graphql'>() !== 'graphql') {
       return next.handle();
@@ -37,7 +45,8 @@ export class GraphQLInterceptor implements NestInterceptor {
               .handle()
               .pipe(
                 tap({
-                  error: (err) => recordGraphQLError(err, span, info.fieldName),
+                  error: (err) =>
+                    recordGraphQLError(err, span, info.fieldName, this.log),
                 }),
                 finalize(() => {
                   if (owned) span.end();
@@ -45,7 +54,7 @@ export class GraphQLInterceptor implements NestInterceptor {
               )
               .subscribe(subscriber);
           } catch (err) {
-            recordGraphQLError(err, span, info.fieldName);
+            recordGraphQLError(err, span, info.fieldName, this.log);
             if (owned) span.end();
             subscriber.error(err);
           }
@@ -98,8 +107,10 @@ function recordGraphQLError(
   error: unknown,
   span: Span,
   operation: string,
+  log?: ScopedLogger,
 ): void {
   attachTraceContext(error, span, operation);
+  log?.error('GraphQL operation failed', { error, operation });
   span.recordException(error as Error);
   span.setStatus({
     code: SpanStatusCode.ERROR,

@@ -6,12 +6,20 @@ import {
   type ExecutionContext,
   Injectable,
   type NestInterceptor,
+  Optional,
 } from '@nestjs/common';
+import { OmnixysLogger } from '@omnixys/logger-ts';
 import { SpanStatusCode, trace } from '@opentelemetry/api';
 import { finalize, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class TraceInterceptor implements NestInterceptor {
+  private readonly log;
+
+  constructor(@Optional() private readonly logger?: OmnixysLogger) {
+    this.log = this.logger?.log(this.constructor.name);
+  }
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     if (context.getType() !== 'http') return next.handle();
 
@@ -34,6 +42,11 @@ export class TraceInterceptor implements NestInterceptor {
               .pipe(
                 tap({
                   error: (error) => {
+                    this.log?.error('HTTP request failed', {
+                      error,
+                      method: request.method,
+                      route,
+                    });
                     span.recordException(error);
                     span.setStatus({
                       code: SpanStatusCode.ERROR,
@@ -50,6 +63,11 @@ export class TraceInterceptor implements NestInterceptor {
               )
               .subscribe(subscriber);
           } catch (error) {
+            this.log?.error('HTTP request failed before handler execution', {
+              error,
+              method: request.method,
+              route,
+            });
             span.recordException(error as Error);
             span.setStatus({ code: SpanStatusCode.ERROR });
             SpanEnricher.enrich(span);
