@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.4.1](https://github.com/omnixys/observability-ts/compare/v3.4.0...v3.4.1) (2026-08-24)
+
+### Observability
+
+* **Observability:** break dependency cycle with logger package ([](https://github.com/omnixys/observability-ts/commit/9ef39deb52a1ac304922abe4976bb5d28c759c45))
+
 ## [3.4.0](https://github.com/omnixys/observability-ts/compare/v3.3.6...v3.4.0) (2026-08-24)
 
 ### Browser
