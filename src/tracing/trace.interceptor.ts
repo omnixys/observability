@@ -1,14 +1,18 @@
 import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
+import {
+  OMNIXYS_LOGGER,
+  type PlatformTraceLogger,
+} from '../logging/platform-logger.token.js';
 import { SpanEnricher } from './span-enricher.js';
 import { SpanNaming } from './span-naming.util.js';
 import {
   type CallHandler,
   type ExecutionContext,
+  Inject,
   Injectable,
   type NestInterceptor,
   Optional,
 } from '@nestjs/common';
-import { OmnixysLogger } from '@omnixys/logger-ts';
 import { SpanStatusCode, trace } from '@opentelemetry/api';
 import { finalize, Observable, tap } from 'rxjs';
 
@@ -16,7 +20,11 @@ import { finalize, Observable, tap } from 'rxjs';
 export class TraceInterceptor implements NestInterceptor {
   private readonly log;
 
-  constructor(@Optional() private readonly logger?: OmnixysLogger) {
+  constructor(
+    @Optional()
+    @Inject(OMNIXYS_LOGGER)
+    private readonly logger?: PlatformTraceLogger,
+  ) {
     this.log = this.logger?.log(this.constructor.name);
   }
 

@@ -1,8 +1,8 @@
 import { runWithCanonicalTrace } from '../context/canonical-trace-context.js';
+import { OMNIXYS_LOGGER, type PlatformTraceLogger } from '../logging/platform-logger.token.js';
 import { SpanEnricher } from '../tracing/span-enricher.js';
 import { CacheMetricsService } from './cache-metrics.service.js';
-import { Injectable, Optional } from '@nestjs/common';
-import { OmnixysLogger } from '@omnixys/logger-ts';
+import { Inject, Injectable, Optional } from '@nestjs/common';
 import { SpanStatusCode, trace, type Span, type SpanKind } from '@opentelemetry/api';
 
 @Injectable()
@@ -11,7 +11,9 @@ export class CacheObservabilityService {
 
   constructor(
     private readonly metrics: CacheMetricsService,
-    @Optional() private readonly logger?: OmnixysLogger,
+    @Optional()
+    @Inject(OMNIXYS_LOGGER)
+    private readonly logger?: PlatformTraceLogger,
   ) {
     this.log = this.logger?.log(this.constructor.name);
   }
