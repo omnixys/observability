@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.4.2](https://github.com/omnixys/observability-ts/compare/v3.4.1...v3.4.2) (2026-08-28)
+
+### Deps
+
+* **Deps:** update contracts-ts ([](https://github.com/omnixys/observability-ts/commit/8c1006474b6de027d699ffedbe4336e4cdca37b5))
+
 ## [3.4.1](https://github.com/omnixys/observability-ts/compare/v3.4.0...v3.4.1) (2026-08-24)
 
 ### Observability
