@@ -3,6 +3,23 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.0.0](https://github.com/omnixys/observability-ts/compare/v3.4.2...v4.0.0) (2026-09-02)
+
+### Ci
+
+* **Ci:** add missing labeler and dependabot config to match contracts ([](https://github.com/omnixys/observability-ts/commit/93666501e46befc81238412271d0f6d32c2c4500))
+* **Ci:** add PR build check workflow for main ([](https://github.com/omnixys/observability-ts/commit/24af2b979feef0ec8aab37c41355bfb86441c0fa))
+* **Ci:** update ci ([](https://github.com/omnixys/observability-ts/commit/327d7600a2d7816bfeb845430447ead95e3fc09c))
+* **Ci:** add npm registry auth before install in release workflow ([](https://github.com/omnixys/observability-ts/commit/9f609e3957e36731908efec0d4dcf8bf06544d2b))
+
+### Other
+
+* **Other:** Merge pull request #1 from omnixys/migration/uuid-v7 ([](https://github.com/omnixys/observability-ts/commit/7f8b04a09abd8a2bebfddcc17d6f764210729f88)), closes [#1](https://github.com/omnixys/observability-ts/issues/1)
+
+### Runtime
+
+* **Runtime:** require node 26.8.1 and pnpm 11.24.0 ([](https://github.com/omnixys/observability-ts/commit/abee78a0de17e90024930841de78cc97e8462b5a))
+
 ## [3.4.2](https://github.com/omnixys/observability-ts/compare/v3.4.1...v3.4.2) (2026-08-28)
 
 ### Deps
