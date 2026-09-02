@@ -9,7 +9,7 @@
 
 - Kind: Shared Package
 - Package: `@omnixys/observability-ts` (version: 3.2.2)
-- Runtime: Node >=20 (pnpm >=10.33.0)
+- Runtime: Node >=26.8.1 (pnpm >=11.24.0)
 - Description: Omnixys observability package for TypeScript (OTel, metrics, structured logging).
 - Architecture: src/ observability
 - Database: n/a; Migrations: n/a
