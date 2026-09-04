@@ -96,8 +96,8 @@
     "@nestjs/common": "^11.2.1",
     "@nestjs/core": "^11.2.1",
     "@nestjs/graphql": "^13.4.5",
-    "@omnixys/context-ts": "^4.0.2",
-    "@omnixys/contracts-ts": "^4.0.0",
+    "@omnixys/context-ts": "^4.1.0",
+    "@omnixys/contracts-ts": "^4.1.0",
     "@prisma/client": "^7.9.1",
     "@react-types/shared": "^3.36.1",
     "@semantic-release/changelog": "^6.0.3",
@@ -122,8 +122,8 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.1.17",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/context-ts": "^4.0.2",
-    "@omnixys/contracts-ts": "^4.0.0",
+    "@omnixys/context-ts": "^4.1.0",
+    "@omnixys/contracts-ts": "^4.1.0",
     "fastify": "^5.8.2"
   },
   "peerDependenciesMeta": {

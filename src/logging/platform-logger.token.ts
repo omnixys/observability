@@ -10,5 +10,5 @@ export interface PlatformScopedErrorLogger {
 }
 
 export interface PlatformTraceLogger {
-  log(context: string): PlatformScopedErrorLogger;
+  log(context: string, source?: string): PlatformScopedErrorLogger;
 }

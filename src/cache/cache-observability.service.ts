@@ -15,7 +15,7 @@ export class CacheObservabilityService {
     @Inject(OMNIXYS_LOGGER)
     private readonly logger?: PlatformTraceLogger,
   ) {
-    this.log = this.logger?.log(this.constructor.name);
+    this.log = this.logger?.log(this.constructor.name, 'package:@omnixys/observability-ts');
   }
 
   async trace<T>(
