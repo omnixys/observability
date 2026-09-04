@@ -3,6 +3,13 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.1.0](https://github.com/omnixys/observability-ts/compare/v4.0.0...v4.1.0) (2026-09-04)
+
+### Log
+
+* **Log:** add logger ([](https://github.com/omnixys/observability-ts/commit/147972ad2e5d9cdb298c62e6830e26f23dbfe8ea))
+* **Log:** add logger ([](https://github.com/omnixys/observability-ts/commit/90467a073120aca28ee8d5ae9ec6a604bcc33e02))
+
 ## [4.0.0](https://github.com/omnixys/observability-ts/compare/v3.4.2...v4.0.0) (2026-09-02)
 
 ### Ci
